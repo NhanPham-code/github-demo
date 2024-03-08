@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import model.Product;
 
 /**
  *
@@ -57,6 +61,12 @@ public class product extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ProductDAO pDAO = new ProductDAO();
+        String type = request.getParameter("type");
+        List<Product> listProduct = pDAO.getAllProductWithType(type);
+        request.setAttribute("listProduct", listProduct);
+
+        request.getRequestDispatcher("product.jsp").forward(request, response);
         
     }
 
@@ -71,7 +81,7 @@ public class product extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
@@ -83,5 +93,12 @@ public class product extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
+    public static void main(String[] args) {
+        ProductDAO pDAO = new ProductDAO();
+        
+        List<Product> listProduct = pDAO.getAllProductWithType("Bread");
+        System.out.println(listProduct.get(1).getProName());
+        
+    }
 }

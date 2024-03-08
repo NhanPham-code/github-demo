@@ -9,81 +9,81 @@ package model;
  * @author Admin
  */
 public class Product {
-    private String ProductID;
-    private float Price;
-    private int Quantity;
-    private String ProName;
-    private String ProImage;
-    private String Describe;
-    private String TypeName;
+    private String productID;
+    private float price;
+    private int quantity;
+    private String proName;
+    private String proImage;
+    private String describe;
+    private String typeName;
 
     public Product() {
     }
 
     public Product(String ProductID, float Price, int Quantity, String ProName, String ProImage, String Describe, String TypeName) {
-        this.ProductID = ProductID;
-        this.Price = Price;
-        this.Quantity = Quantity;
-        this.ProName = ProName;
-        this.ProImage = ProImage;
-        this.Describe = Describe;
-        this.TypeName = TypeName;
+        this.productID = ProductID;
+        this.price = Price;
+        this.quantity = Quantity;
+        this.proName = ProName;
+        this.proImage = ProImage;
+        this.describe = Describe;
+        this.typeName = TypeName;
     }
 
     public String getProductID() {
-        return ProductID;
+        return productID;
     }
 
     public void setProductID(String ProductID) {
-        this.ProductID = ProductID;
+        this.productID = ProductID;
     }
 
     public float getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(float Price) {
-        this.Price = Price;
+        this.price = Price;
     }
 
     public int getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(int Quantity) {
-        this.Quantity = Quantity;
+        this.quantity = Quantity;
     }
 
     public String getProName() {
-        return ProName;
+        return proName;
     }
 
     public void setProName(String ProName) {
-        this.ProName = ProName;
+        this.proName = ProName;
     }
 
     public String getProImage() {
-        return ProImage;
+        return proImage;
     }
 
     public void setProImage(String ProImage) {
-        this.ProImage = ProImage;
+        this.proImage = ProImage;
     }
 
     public String getDescribe() {
-        return Describe;
+        return describe;
     }
 
     public void setDescribe(String Describe) {
-        this.Describe = Describe;
+        this.describe = Describe;
     }
 
     public String getTypeName() {
-        return TypeName;
+        return typeName;
     }
 
     public void setTypeName(String TypeName) {
-        this.TypeName = TypeName;
+        this.typeName = TypeName;
     }
     
     

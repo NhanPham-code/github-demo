@@ -245,7 +245,7 @@
                         <span>Products</span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
-                                <a href="product?cId=${ct.categoryId}">${ct.categoryName}</a> <br>
+                                <a href="product?type=${ct}">${ct}</a> <br>
                             </c:forEach>
                         </div>
                     </div>
