@@ -318,28 +318,28 @@
 
         <section class="categories">
             <div class="category">
-                <a href="product?cId=1">
+                <a href="product?type=Bread">
                     <img src="img/PRODUCT/Bread/Gourment Fruit Loaf.png" alt="bread"/>
                     <h3>BREADS</h3>
                 </a>
             </div>
 
             <div class="category">
-                <a href="product?cId=2">
+                <a href="product?type=Cake%20slice">
                     <img src="img/PRODUCT/Cake slice/Chocolate Peanut Mousse.png" alt="cake"/>
                     <h3>CAKE SLICES</h3>
                 </a>
             </div>
 
             <div class="category">
-                <a href="product?cId=3">
+                <a href="product?type=Special">
                     <img src="img/PRODUCT/Special/Snowy Fruity.png" alt="special"/>
                     <h3>SPECIAL ANNIVERSARY</h3>
                 </a>
             </div>
 
             <div class="category">
-                <a href="product?cId=4">
+                <a href="product?type=Sweet">
                     <img src="img/PRODUCT/Sweet/Chocolate Donut.png" alt="sweet"/>
                     <h3>SWEETS</h3>
                 </a>

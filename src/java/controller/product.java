@@ -65,7 +65,9 @@ public class product extends HttpServlet {
         String type = request.getParameter("type");
         List<Product> listProduct = pDAO.getAllProductWithType(type);
         request.setAttribute("listProduct", listProduct);
-
+        
+        List<String> categoryList = pDAO.getAllType();
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("product.jsp").forward(request, response);
         
     }
