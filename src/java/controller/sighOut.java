@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dao.loginDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +12,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Account;
-import model.hashPasswordMD5;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "login", urlPatterns = {"/login"})
-public class login extends HttpServlet {
+@WebServlet(name = "sighOut", urlPatterns = {"/sighOut"})
+public class sighOut extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet sighOut</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet sighOut at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,7 +58,16 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+        
+        response.sendRedirect("home");
     }
 
     /**
@@ -76,38 +81,7 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        // hash password
-        hashPasswordMD5 md5 = new hashPasswordMD5();
-        String hashPass = md5.hashPasswordMD5(password);
-        
-        // check login
-        loginDAO lDAO = new loginDAO();
-        boolean checker = lDAO.checkLogin(username, hashPass);
-        
-        if(checker) {
-            //get accout by username
-            Account ac = lDAO.getAccountByUsername(username);
-            
-            // add username by cookie
-            Cookie usernameCookie = new Cookie("username", username);
-            Cookie roleCookie = new Cookie("role", ac.getRole());
-            
-            usernameCookie.setMaxAge(60 * 60 * 72);
-            roleCookie.setMaxAge(60 * 60 * 72);
-            
-            response.addCookie(usernameCookie);
-            response.addCookie(roleCookie);
-            
-           
-            response.sendRedirect("home");
-        } else {
-            request.setAttribute("error", "Invalid username or password!!!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        
+        processRequest(request, response);
     }
 
     /**

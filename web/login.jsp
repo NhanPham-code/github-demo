@@ -10,10 +10,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Login Page</title>
+        <!-- Thêm vào phần head của trang -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
-
             body {
-                background-color: #fff;
                 border: 1px solid #ddd;
                 border-radius: 5px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -35,6 +35,19 @@
                 box-sizing: border-box;
                 border: 1px solid #ccc;
                 border-radius: 4px;
+            }
+
+            .password-container {
+                position: relative;
+            }
+
+            .show-password {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #ccc;
             }
 
             input[type="submit"] {
@@ -60,18 +73,39 @@
                 text-decoration: underline;
                 color: #ffcc00;
             }
-
         </style>
+        
+        <script>
+            function togglePasswordVisibility() {
+                var passwordField = document.getElementById('password');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    document.querySelector('.show-password').classList.remove('far', 'fa-eye');
+                    document.querySelector('.show-password').classList.add('fas', 'fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    document.querySelector('.show-password').classList.remove('fas', 'fa-eye-slash');
+                    document.querySelector('.show-password').classList.add('far', 'fa-eye');
+                }
+            }
+        </script>
     </head>
     <body>
         <h2>Login Page</h2>
-
+        
+        <h3 style="color: red">${requestScope.error}</h3>
+        
         <form action="login" method="post">
             Username: <input type="text" name="username" required><br>
-            Password: <input type="password" name="password" required><br>
+            Password: 
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <i class="far fa-eye show-password" onclick="togglePasswordVisibility()"></i>
+            </div>
             <input type="submit" value="Login">
         </form>
 
         <p>Don't have an account? <a href="register.jsp">Register</a></p>
+
     </body>
 </html>

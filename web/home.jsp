@@ -82,6 +82,7 @@
             .others {
                 display: flex;
                 justify-content: center;
+                text-align: center;
             }
 
             .others button {
@@ -103,6 +104,7 @@
             .dropdown {
                 display: inline-block;
                 position: relative;
+                margin: 9px 5px;
             }
 
             .dropdown-content {
@@ -113,16 +115,23 @@
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
                 padding: 10px;
                 z-index: 1;
+                top: 100%; /* Hiển thị dropdown bên dưới icon user */
+                right: 0; /* Hiển thị dropdown từ bên phải của icon user */
             }
 
             .dropdown-content a {
                 font-size: 15px;
-                width: 100%;
+                display: block;
+                padding: 8px 10px; /* Thêm khoảng cách giữa các mục */
+                text-align: left;
+                color: black; /* Màu chữ */
+                text-decoration: none;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
             }
+
 
 
             section {
@@ -264,9 +273,25 @@
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
-                    <a id="login" name="login" value="login" href="login.jsp">
-                        <i class="fas fa-user"></i>
-                    </a>
+                    <span class="dropdown">
+                        <c:choose>
+                            <c:when test="${empty requestScope.user}">
+                                <i class="fas fa-user"></i>
+                                <div class="dropdown-content">
+                                    <a href="login.jsp">Login</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                ${requestScope.user}
+                                <div class="dropdown-content">
+                                    <a href="sighOut">Sign Out</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
+
 
                 </div>
             </nav>
