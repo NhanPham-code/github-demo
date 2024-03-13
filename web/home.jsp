@@ -248,6 +248,7 @@
                 <div>
                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo"/>
                 </div>
+                
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
@@ -260,11 +261,12 @@
                     </div>
                     <a href="contact">Contact</a> <!<!-- check -->
                 </div>
+                
                 <div class="others">
 
                     <form action="search" method="post">
                         <div class="search-container">
-                            <input type="text" name="search" id="searchInput" placeholder="Search">
+                            <input type="text" name="search" id="searchInput" placeholder="Search with name product">
                             <button type="submit"><i class="fas fa-search" id="searchIcon"></i></button>
                         </div>
                     </form>
@@ -309,7 +311,7 @@
         <section>
 
             <h1 style="color: chocolate">Best Sellers</h1>
-            <form action="home" method="post">
+            <form action="card" method="post">
                 <div class="product">
                     <h2>Rainbow Cake</h2>
                     <img src="img/PRODUCT/Special/Rainbow.png" alt="rainbow cake"/>

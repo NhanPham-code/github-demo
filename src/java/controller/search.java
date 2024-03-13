@@ -4,13 +4,17 @@
  */
 package controller;
 
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Product;
 
 /**
  *
@@ -71,7 +75,32 @@ public class search extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // check login
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        
+        
+        String searchString = request.getParameter("search");
+        ProductDAO pDAO = new ProductDAO();
+        
+        // get List Product By seacrh name
+        List<Product> listProduct = pDAO.getAllProductByName(searchString);
+        request.setAttribute("listProduct", listProduct);
+        
+        // get Categories List
+        List<String> categoryList = pDAO.getAllType();
+        request.setAttribute("categoryList", categoryList);
+        
+        //  move to product.jsp
+        request.getRequestDispatcher("product.jsp").forward(request, response);
     }
 
     /**

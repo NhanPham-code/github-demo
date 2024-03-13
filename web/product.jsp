@@ -99,6 +99,7 @@
             .dropdown {
                 display: inline-block;
                 position: relative;
+                margin: 9px 5px;
             }
 
             .dropdown-content {
@@ -109,16 +110,23 @@
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
                 padding: 10px;
                 z-index: 1;
+                top: 100%; /* Hiển thị dropdown bên dưới icon user */
+                right: 0; /* Hiển thị dropdown từ bên phải của icon user */
             }
 
             .dropdown-content a {
                 font-size: 15px;
-                width: 100%;
+                display: block;
+                padding: 8px 10px; /* Thêm khoảng cách giữa các mục */
+                text-align: left;
+                color: black; /* Màu chữ */
+                text-decoration: none;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
             }
+
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -140,6 +148,11 @@
                 padding: 10px;
                 display: flex;
                 flex-wrap: wrap; /* Allow images to wrap to the next line if needed */
+            }
+
+            .right-section a {
+                color: black;
+                text-decoration: none;
             }
 
             /* Additional styles for your product items (modify as needed) */
@@ -208,12 +221,29 @@
                             <button type="submit"><i class="fas fa-search" id="searchIcon"></i></button>
                         </div>
                     </form>
+
                     <a id="cart" name="cart" value="cart" href="cart.jsp">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
-                    <a id="login" name="login" value="login" href="login.jsp">
-                        <i class="fas fa-user"></i>
-                    </a>
+
+                    <span class="dropdown">
+                        <c:choose>
+                            <c:when test="${empty requestScope.user}">
+                                <i class="fas fa-user"></i>
+                                <div class="dropdown-content">
+                                    <a href="login.jsp">Login</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                ${requestScope.user}
+                                <div class="dropdown-content">
+                                    <a href="sighOut">Sign Out</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
                 </div>
             </nav>
         </header>
@@ -229,11 +259,13 @@
         </div>
         <div class="right-section">
             <c:forEach var="p" items="${requestScope.listProduct}">
-                <a class="product-item">
-                    <img src="${p.proImage}" alt="${p.proName}">
-                    <p>${p.proName}</p>
-                    <p>${p.price} $</p>
-                    <button class="add-to-cart-btn" type="button">Add to Cart</button>
+                <a class="product-item" href="#">
+                    <form action="card" method="">
+                        <img src="${p.proImage}" alt="${p.proName}">
+                        <p>${p.proName}</p>
+                        <p>${p.price} $</p>
+                        <button class="add-to-cart-btn" type="submit">Add to Cart</button>
+                    </form>
                 </a>
             </c:forEach>
         </div>

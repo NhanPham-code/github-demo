@@ -66,6 +66,32 @@ public class ProductDAO {
         return listProduct;
     }
 
+    public List<Product> getAllProductByName(String name) {
+        List<Product> listProduct = new ArrayList<>();
+        String sql = "select * from Product\n"
+                + "where ProName like ?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + name + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+                listProduct.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return listProduct;
+    }
+
     public static void main(String[] args) {
         ProductDAO pdao = new ProductDAO();
         List<Product> typeList = pdao.getAllProductWithType("Bread");
