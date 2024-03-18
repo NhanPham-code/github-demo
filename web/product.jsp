@@ -230,8 +230,7 @@
             .add-to-cart-btn:hover {
                 background-color: #ffcc00;
                 font-weight: 600;
-            }
-<<<<<<< HEAD
+            
             .delete-btn {
                 background-color: antiquewhite;
                 color: black;
@@ -246,11 +245,9 @@
             .delete-btn:hover {
                 background-color: #ffcc00;
                 font-weight: 600;
-=======
-            
+            }
             .badges:after {
                 content: attr(data-count);
->>>>>>> 2f63517df5a0ccf0f10deaae881c3e3c257bc2d8
             }
         </style>
     </head>
