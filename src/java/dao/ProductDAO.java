@@ -114,6 +114,29 @@ public class ProductDAO {
         }
         return p;
     }
+    
+    public Product getProductByName(String name) {
+        Product p = new Product();
+        String sql = "select * from Product where ProName = ?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return p;
+    }
 
     public void addNewProduct(Product p) {
 
@@ -204,6 +227,8 @@ public class ProductDAO {
 
     public static void main(String[] args) {
         ProductDAO pdao = new ProductDAO();
-
+        Product p = pdao.getProductByName("rainbow");
+        System.out.println(p.getProductID());
+        System.out.println(p.getProName());
     }
 }

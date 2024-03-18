@@ -351,16 +351,19 @@
                     <% if (role != null && role.getValue().equals("admin")) { %>
                     <form action="updateProduct" method="get">
                         <input type="hidden" name="id" value="${p.productID}">
+                        <input type="hidden" name="quantity" value="1">
                         <button class="update-btn" type="submit">Update</button>
                     </form>
 
                     <form action="deleteProduct" method="get">
                         <input type="hidden" name="id" value="${p.productID}">
+                        <input type="hidden" name="quantity" value="1">
                         <button class="delete-btn" type="submit">Delete</button>
                     </form>
                     <% } else { %>
                     <form action="addToCart" method="get">
                         <input type="hidden" name="id" value="${p.productID}">
+                        <input type="hidden" name="quantity" value="1">
                         <button class="add-to-cart-btn" type="submit">Add to Cart</button>
                     </form>
                     <% } %>

@@ -13,7 +13,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Product;
 
 /**
  *
@@ -76,7 +78,8 @@ public class home extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-
+        
+        
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
@@ -91,7 +94,20 @@ public class home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+         // get productID by name
+        String name = request.getParameter("name");
+        String quantity = request.getParameter("quantity");
+        ProductDAO pDAO = new ProductDAO();
+        Product p = pDAO.getProductByName(name);
+        
+        HttpSession session = request.getSession();
+        
+        session.setAttribute("productID", p.getProductID()); // save productID to cart
+        
+        session.setAttribute("quantiy", quantity); // save quantiy to cart
+        
+        response.sendRedirect("addToCart");
+        
     }
 
     /**

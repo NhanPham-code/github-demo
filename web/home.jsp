@@ -315,91 +315,106 @@
         <section>
 
             <h1 style="color: chocolate">Best Sellers</h1>
-            <form action="card" method="post">
-                <div class="product">
+
+            <div class="product">
+                <form action="home" method="post">
+                    <input type="hidden" name="name" value="rainbow">
+                    <input type="hidden" name="quantity" value="1">
                     <h2>Rainbow Cake</h2>
                     <img src="img/PRODUCT/Special/Rainbow.png" alt="rainbow cake"/>
                     <p>Delicious rainbow cake for your sweet tooth.</p>
                     <p>Price: $20</p>
                     <button type="submit" name="button" value="rainbow">Add to Cart</button>
-                </div>
+                </form>
+            </div>
 
-                <div class="product">
+
+            <div class="product">
+                <form action="home" method="post">
+                    <input type="hidden" name="name" value="bunny">
+                    <input type="hidden" name="quantity" value="1">
                     <h2>Bunny cake</h2>
                     <img src="img/PRODUCT/Cake slice/Bunny.png" alt="bunny cake"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
                     <button type="submit" name="button" value="bunny">Add to Cart</button>
-                </div>
+                </form>
+            </div>
 
-                <div class="product">
+
+            <div class="product">
+                <form action="home" method="post">
+                    <input type="hidden" name="name" value="golden lava bun">
+                    <input type="hidden" name="quantity" value="1">
                     <h2>Golden Lava</h2>
                     <img src="img/PRODUCT/Bread/Golden Lava Bun.png" alt="golden lava"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
                     <button type="submit" name="button" value="golden">Add to Cart</button>
-                </div>
-
-
-                <!-- Add more products as needed -->
-            </form>
-        </section>
-
-
-
-        <section class="categories">
-            <div class="category">
-                <a href="product?type=Bread">
-                    <img src="img/PRODUCT/Bread/Gourment Fruit Loaf.png" alt="bread"/>
-                    <h3>BREADS</h3>
-                </a>
+                </form>
             </div>
 
-            <div class="category">
-                <a href="product?type=Cake%20slice">
-                    <img src="img/PRODUCT/Cake slice/Chocolate Peanut Mousse.png" alt="cake"/>
-                    <h3>CAKE SLICES</h3>
-                </a>
-            </div>
 
-            <div class="category">
-                <a href="product?type=Special">
-                    <img src="img/PRODUCT/Special/Snowy Fruity.png" alt="special"/>
-                    <h3>SPECIAL ANNIVERSARY</h3>
-                </a>
-            </div>
+            <!-- Add more products as needed -->
+        </form>
 
-            <div class="category">
-                <a href="product?type=Sweet">
-                    <img src="img/PRODUCT/Sweet/Chocolate Donut.png" alt="sweet"/>
-                    <h3>SWEETS</h3>
-                </a>
-            </div>
-
-            <!-- Add more categories as needed -->
-        </section>
+    </section>
 
 
 
-        <footer>
-            <p>&copy; 2024 Bakery Shop. All rights reserved.</p> <br>
+    <section class="categories">
+        <div class="category">
+            <a href="product?type=Bread">
+                <img src="img/PRODUCT/Bread/Gourment Fruit Loaf.png" alt="bread"/>
+                <h3>BREADS</h3>
+            </a>
+        </div>
 
-        </footer>
+        <div class="category">
+            <a href="product?type=Cake%20slice">
+                <img src="img/PRODUCT/Cake slice/Chocolate Peanut Mousse.png" alt="cake"/>
+                <h3>CAKE SLICES</h3>
+            </a>
+        </div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let images = document.querySelectorAll('.img_center img');
-                let currentIndex = 0;
+        <div class="category">
+            <a href="product?type=Special">
+                <img src="img/PRODUCT/Special/Snowy Fruity.png" alt="special"/>
+                <h3>SPECIAL ANNIVERSARY</h3>
+            </a>
+        </div>
 
-                function showNextImage() {
-                    images[currentIndex].style.display = 'none';
-                    currentIndex = (currentIndex + 1) % images.length;
-                    images[currentIndex].style.display = 'block';
-                }
+        <div class="category">
+            <a href="product?type=Sweet">
+                <img src="img/PRODUCT/Sweet/Chocolate Donut.png" alt="sweet"/>
+                <h3>SWEETS</h3>
+            </a>
+        </div>
 
-                setInterval(showNextImage, 5000);
-            });
-        </script>
+        <!-- Add more categories as needed -->
+    </section>
 
-    </body>
+
+
+    <footer>
+        <p>&copy; 2024 Bakery Shop. All rights reserved.</p> <br>
+
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let images = document.querySelectorAll('.img_center img');
+            let currentIndex = 0;
+
+            function showNextImage() {
+                images[currentIndex].style.display = 'none';
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].style.display = 'block';
+            }
+
+            setInterval(showNextImage, 5000);
+        });
+    </script>
+
+</body>
 </html>
