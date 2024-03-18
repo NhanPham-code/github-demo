@@ -15,7 +15,6 @@
         <script src="https://cdn.rawgit.com/matthieua/WOW/1.0.1/dist/wow.min.js"></script>
         <link rel="profile" href="http://gmpg.org/xfn/11">
         <link href="css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
             body {
@@ -292,7 +291,7 @@
                 width: 100%;
             }
 
-            .badge:after {
+            .badges:after {
                 content: attr(data-count);
             }
 
@@ -326,7 +325,7 @@
                     </div>
                 </form>
 
-                <a id="cart" name="cart" value="cart" href="cart.jsp" class="badge" data-count="0">
+                <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
 

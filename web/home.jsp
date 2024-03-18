@@ -240,7 +240,7 @@
                 width: 100%;
             }
 
-            .badge:after {
+            .badges:after {
                 content: attr(data-count);
             }
         </style>
@@ -275,7 +275,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badge" data-count="0">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
