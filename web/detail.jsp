@@ -427,17 +427,10 @@
                         <div class="product-detail-img">
                             <img src="${p.proImage}" alt="${p.proName}"> 
                     </div>   
-
                     <div class="summary">
-                        <div class="product_meta">
-                            <span class="posted_in">Catalogue:  <a href="" rel="tag">${p.typeName}</a></span>
-                        </div>
-                        <p>${p.proName}</p>
-                        <div class="product-description-inner">
-                            <h3 class="product_describe">Describe</h3>
-                            <p>${p.describe}</p>
-                        </div>
+                        <h1 class="product_title">${p.proName}</h1>
                         <p>${p.price} $</p>
+
                         <form class="cart" action="cart" method="get">
                             <div class="add-to-cart">
                                 <div class="quantity">
@@ -469,12 +462,19 @@
                                             quantityInput.value = number; // Update the input element value
                                         }
                                     </script>
-
                                 </div>
                                 <button type="submit" name="add-to-cart" value="" class="single_add_to_cart_button button alt">Add to cart</button>
                             </div>
-
                         </form>
+                        <div class="product_meta">
+                            <span class="posted_in">Catalogue:  <a href="" rel="tag">${p.typeName}</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product_summary">
+                    <div class="product-description-inner">
+                        <h3 class="product_describe">Describe</h3>
+                        <p>${p.describe}</p>
                     </div>
                 </div>
             </div>   

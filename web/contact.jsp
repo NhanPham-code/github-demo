@@ -12,36 +12,36 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bakery Shop</title>
-        <script src="https://cdn.rawgit.com/matthieua/WOW/1.0.1/dist/wow.min.js"></script>
-        <link rel="profile" href="http://gmpg.org/xfn/11">
         <link href="css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
             body {
                 font-family: Arial, sans-serif;
-                margin: 0px;
+                margin: 0;
                 padding: 0;
-                background-color: bisque;
+                background-color: #f4f4f4;
             }
 
             header {
-                background-color: bisque;
-                color: chocolate;
+                background-color: whitesmoke;
                 text-align: center;
-                padding: 1em;
+                padding: 0;
+                position: fixed; /* Đặt vị trí là fixed */
+                top: 0; /* Giữ phần header ở trên cùng của trang */
+                width: 100%; /* Chiều rộng 100% */
+                z-index: 1000; /* Đảm bảo nó nằm trên các phần tử khác */
             }
 
             nav {
                 border: 1px whitesmoke;
                 border-radius: 1px;
-                background-color: blanchedalmond;
+                background-color: antiquewhite;
                 padding: 10px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 50px;
+                height: 80px;
             }
-
 
 
             nav a {
@@ -55,15 +55,15 @@
 
             nav a:hover {
                 color: #ffcc00; /* Màu chữ khi di chuột vào */
+                text-decoration: none;
             }
 
             nav span {
                 font-size: 20px;
             }
-
             .search-container {
                 align-items: center;
-                padding-top: 6px;
+                padding-top: 8.5px;
             }
 
             .search-container input {
@@ -93,8 +93,8 @@
 
 
             .others input {
-                width: 250px;
-                height: 25px;
+                width: 255px;
+                height: 26px;
                 border: #fff;
                 border-radius: 4px;
             }
@@ -231,6 +231,7 @@
                 padding-left: 0.925rem;
                 margin-left: 15px;
                 margin-right: 15px;
+                margin-top: 70px;
             }
             .container-fluid{
                 flex-flow: row wrap;
@@ -300,203 +301,203 @@
     </head>
     <body>
 
-    <hedaer>
-        <nav>
-            <div class = "img_logo">
-                <img id="logo" src="img/LOGO/logo.png" alt="logo"/>
-            </div>
-            <div class="menu">
-                <a href="home" name>Home</a>
-                <div class="dropdown">
-                    <span>Products</span>
-                    <div class="dropdown-content">
-                        <c:forEach var="ct" items="${requestScope.categoryList}">
-                            <a href="product?type=${ct}">${ct}</a> <br>
-                        </c:forEach>
-                    </div>
+        <header>
+            <nav>
+                <div>
+                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo">
                 </div>
-                <a href="contact">Contact</a>
-            </div>
-            <div class="others">
-                <form action="search" method="post">
-                    <div class="search-container">
-                        <input type="text" name="search" id="searchInput" placeholder="Search">
-                        <button type="submit"><i class="fas fa-search" id="searchIcon"></i></button>
-                    </div>
-                </form>
-
-                <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
-                    <i class="fas fa-shopping-cart"></i>
-                </a>
-
-                <span class="dropdown">
-                    <c:choose>
-                        <c:when test="${empty requestScope.user}">
-                            <i class="fas fa-user"></i>
-                            <div class="dropdown-content">
-                                <a href="login.jsp">Login</a>
-                                <!-- Thêm các mục khác tại đây nếu cần -->
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            ${requestScope.user}
-                            <div class="dropdown-content">
-                                <a href="sighOut">Sign Out</a>
-                                <!-- Thêm các mục khác tại đây nếu cần -->
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </span>
-            </div>
-        </nav>
-    </hedaer>
-
-    <div class="grid-container">
-        <!--information airblade 160cc-->
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> About us </h3>
-                <div class="about_desc">
-                    <p>Experience amazing bread cuisine at Caky Word!</p>
-                    <p>
-                        "“We are confident of leading with prestige and quality,"
-                        <br>
-                        " We understand Vietnamese cuisine and taste,"
-                        <br>
-                        " We are constantly innovating and creating“."
-                        <br>
-                    <p>Experience amazing bakery cuisine at the bread brand today!</p> 
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 img">
-                <div class="col-md-4 img_us">
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/dhp.png"
-                        alt=""
-                        />
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/hnt.png"
-                        alt=""
-                        />
-                </div>
-
-                <div class="col-md-4 img_us">
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/phn.png"
-                        alt=""
-                        />
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/tcun.png"
-                        alt=""
-                        />
-                </div>
-                <div class="col-md-4 img_us">
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/vhd.png"
-                        alt=""
-                        />
-                    <img
-                        class="img-responsive img-sub"
-                        src="img/CONTACT/US/bread.png"
-                        alt=""
-                        />
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="grid-container">
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> Contact </h3>
-                <form>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Fullname</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="Enter Fullname"
-                            />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleFormControlInput2">Email address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            id="exampleFormControlInput2"
-                            placeholder="name@example.com"
-                            />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleFormControlInput3">Phone number</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="exampleFormControlInput3"
-                            placeholder="0xxxxxxxxxx"
-                            />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Your suggestion</label>
-                        <textarea
-                            class="form-control"
-                            id="exampleFormControlTextarea1"
-                            rows="3"
-                            ></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-
-
-            <div class="col-md-6 img">
-                <ul class="infomation">
-                    <li>
-                        <div class="img_logo">
-                            <img id="logo" src="img/LOGO/logo.png" alt="logo"/>
+                <div class="menu">
+                    <a href="home" name>Home</a>
+                    <div class="dropdown">
+                        <span>Products</span>
+                        <div class="dropdown-content">
+                            <c:forEach var="ct" items="${requestScope.categoryList}">
+                                <a href="product?type=${ct}">${ct}</a> <br>
+                            </c:forEach>
                         </div>
-                        <div class="infomation_list">
-                            <div class="infomation_inner">
-                                <div class="infomation_svg">
-                                    <i class="fa fa-location-arrow"></i>                                            </div>
-                                <div class="infomation_text">
-                                    600, đường Nguyễn Văn Cừ (nối dài), phường An Bình, quận Ninh Kiều, TP. Cần Thơ                                           </div>
+                    </div>
+                    <a href="contact">Contact</a>
+                </div>
+                <div class="others">
+                    <form action="search" method="post">
+                        <div class="search-container">
+                            <input type="text" name="search" id="searchInput" placeholder="Search">
+                            <button type="submit"><i class="fas fa-search" id="searchIcon"></i></button>
+                        </div>
+                    </form>
+
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+
+                    <span class="dropdown">
+                        <c:choose>
+                            <c:when test="${empty requestScope.user}">
+                                <i class="fas fa-user"></i>
+                                <div class="dropdown-content">
+                                    <a href="login.jsp">Login</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                ${requestScope.user}
+                                <div class="dropdown-content">
+                                    <a href="sighOut">Sign Out</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
+                </div>
+            </nav>
+        </header>
+
+        <div class="grid-container">
+            <!--information airblade 160cc-->
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> About us </h3>
+                    <div class="about_desc">
+                        <p>Experience amazing bread cuisine at Caky Word!</p>
+                        <p>
+                            "“We are confident of leading with prestige and quality,"
+                            <br>
+                            " We understand Vietnamese cuisine and taste,"
+                            <br>
+                            " We are constantly innovating and creating“."
+                            <br>
+                        <p>Experience amazing bakery cuisine at the bread brand today!</p> 
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 img">
+                    <div class="col-md-4 img_us">
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/dhp.png"
+                            alt=""
+                            />
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/hnt.png"
+                            alt=""
+                            />
+                    </div>
+
+                    <div class="col-md-4 img_us">
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/phn.png"
+                            alt=""
+                            />
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/tcun.png"
+                            alt=""
+                            />
+                    </div>
+                    <div class="col-md-4 img_us">
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/vhd.png"
+                            alt=""
+                            />
+                        <img
+                            class="img-responsive img-sub"
+                            src="img/CONTACT/US/bread.png"
+                            alt=""
+                            />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="grid-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> Contact </h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Fullname</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="exampleFormControlInput1"
+                                placeholder="Enter Fullname"
+                                />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlInput2">Email address</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="exampleFormControlInput2"
+                                placeholder="name@example.com"
+                                />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlInput3">Phone number</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="exampleFormControlInput3"
+                                placeholder="0xxxxxxxxxx"
+                                />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Your suggestion</label>
+                            <textarea
+                                class="form-control"
+                                id="exampleFormControlTextarea1"
+                                rows="3"
+                                ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="col-md-6 img">
+                    <ul class="infomation">
+                        <li>
+                            <div class="img_logo">
+                                <img id="logo" src="img/LOGO/logo.png" alt="logo"/>
                             </div>
-                            <a href="mailto:info@breadtalkvietnam.com">
+                            <div class="infomation_list">
                                 <div class="infomation_inner">
                                     <div class="infomation_svg">
-                                        <i class="fa fa-envelope-open"></i>                                            </div>
+                                        <i class="fa fa-location-arrow"></i>                                            </div>
+                                    <div class="infomation_text">
+                                        600, đường Nguyễn Văn Cừ (nối dài), phường An Bình, quận Ninh Kiều, TP. Cần Thơ                                           </div>
+                                </div>
+                                <a href="mailto:info@breadtalkvietnam.com">
+                                    <div class="infomation_inner">
+                                        <div class="infomation_svg">
+                                            <i class="fa fa-envelope-open"></i>                                            </div>
 
-                                    <div class="infomation_text">
-                                        cakywordvietnam@gmail.com                                          </div>
-                                </div>
-                            </a>
-                            <a href="tel:02837751727">
-                                <div class="infomation_inner">
-                                    <div class="infomation_svg">
-                                        <i class="fa fa-phone"></i>                                            </div>
-                                    <div class="infomation_text">
-                                        093 974 0742 (08h00 – 17h00); 091 575 1200  (07h00 – 22h00)                                            </div>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
+                                        <div class="infomation_text">
+                                            cakywordvietnam@gmail.com                                          </div>
+                                    </div>
+                                </a>
+                                <a href="tel:02837751727">
+                                    <div class="infomation_inner">
+                                        <div class="infomation_svg">
+                                            <i class="fa fa-phone"></i>                                            </div>
+                                        <div class="infomation_text">
+                                            093 974 0742 (08h00 – 17h00); 091 575 1200  (07h00 – 22h00)                                            </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
     </body>
 </html>
 
