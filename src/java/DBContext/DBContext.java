@@ -30,7 +30,7 @@ public class DBContext {
     }
 
     private final String serverName = "LAPTOP-LHN746VG";
-    private final String dbName = "bakeryShop";
+    private final String dbName = "bakeryDB";
     private final String portNumber = "1433";
     private final String instance = "";
     private final String userID = "sa";
