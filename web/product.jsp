@@ -230,7 +230,7 @@
             .add-to-cart-btn:hover {
                 background-color: #ffcc00;
                 font-weight: 600;
-            
+            }
             .delete-btn {
                 background-color: antiquewhite;
                 color: black;
@@ -245,9 +245,6 @@
             .delete-btn:hover {
                 background-color: #ffcc00;
                 font-weight: 600;
-            }
-            .badges:after {
-                content: attr(data-count);
             }
         </style>
     </head>
@@ -277,7 +274,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
