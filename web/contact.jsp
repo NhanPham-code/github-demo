@@ -15,7 +15,6 @@
         <script src="https://cdn.rawgit.com/matthieua/WOW/1.0.1/dist/wow.min.js"></script>
         <link rel="profile" href="http://gmpg.org/xfn/11">
         <link href="css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
             body {
@@ -103,20 +102,28 @@
             .dropdown {
                 display: inline-block;
                 position: relative;
+                margin: 9px 5px;
             }
 
             .dropdown-content {
-                width: 160px;
+                width: 200px;
                 display: none;
                 position: absolute;
                 background-color: #f9f9f9;
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
                 padding: 10px;
                 z-index: 1;
+                top: 100%; /* Hiển thị dropdown bên dưới icon user */
+                right: 0; /* Hiển thị dropdown từ bên phải của icon user */
             }
 
             .dropdown-content a {
                 font-size: 15px;
+                display: block;
+                padding: 8px 10px; /* Thêm khoảng cách giữa các mục */
+                text-align: left;
+                color: black; /* Màu chữ */
+                text-decoration: none;
             }
 
             .dropdown:hover .dropdown-content {
@@ -283,6 +290,12 @@
                 /* bottom: 0; */
                 width: 100%;
             }
+
+            .badges:after {
+                content: attr(data-count);
+            }
+
+
         </style>
     </head>
     <body>
@@ -298,14 +311,13 @@
                     <span>Products</span>
                     <div class="dropdown-content">
                         <c:forEach var="ct" items="${requestScope.categoryList}">
-                                <a href="product?cId=${ct.categoryId}">${ct.categoryName}</a> <br>
+                            <a href="product?type=${ct}">${ct}</a> <br>
                         </c:forEach>
                     </div>
                 </div>
-                <a href="contact">Contact</a> <!<!-- check -->
+                <a href="contact">Contact</a>
             </div>
             <div class="others">
-
                 <form action="search" method="post">
                     <div class="search-container">
                         <input type="text" name="search" id="searchInput" placeholder="Search">
@@ -313,18 +325,32 @@
                     </div>
                 </form>
 
-                <a id="cart" name="cart" value="cart" href="cart.jsp">
+                <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
 
-                <a id="login" name="login" value="login" href="login.jsp">
-                    <i class="fas fa-user"></i>
-                </a>
-
+                <span class="dropdown">
+                    <c:choose>
+                        <c:when test="${empty requestScope.user}">
+                            <i class="fas fa-user"></i>
+                            <div class="dropdown-content">
+                                <a href="login.jsp">Login</a>
+                                <!-- Thêm các mục khác tại đây nếu cần -->
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            ${requestScope.user}
+                            <div class="dropdown-content">
+                                <a href="sighOut">Sign Out</a>
+                                <!-- Thêm các mục khác tại đây nếu cần -->
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </span>
             </div>
         </nav>
     </hedaer>
-    
+
     <div class="grid-container">
         <!--information airblade 160cc-->
         <div class="row">

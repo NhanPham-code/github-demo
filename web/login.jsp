@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -95,11 +96,13 @@
         
         <h3 style="color: red">${requestScope.error}</h3>
         
+        <c:set var="ac" value="${requestScope.ac}"></c:set>
+        
         <form action="login" method="post">
-            Username: <input type="text" name="username" required><br>
+            Username: <input type="text" name="username" value="${ac.getUsername()}" required><br>
             Password: 
             <div class="password-container">
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" value="${requestScope.pass}" required>
                 <i class="far fa-eye show-password" onclick="togglePasswordVisibility()"></i>
             </div>
             <input type="submit" value="Login">

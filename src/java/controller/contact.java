@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,6 +60,10 @@ public class contact extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // get list product type
+        ProductDAO pDAO = new ProductDAO();
+        List<String> categoryList = pDAO.getAllType();
+        request.setAttribute("categoryList", categoryList);
         
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }

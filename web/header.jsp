@@ -23,7 +23,11 @@
             header {
                 background-color: whitesmoke;
                 text-align: center;
-                padding: 1em;
+                padding: 0;
+                position: fixed; /* Đặt vị trí là fixed */
+                top: 0; /* Giữ phần header ở trên cùng của trang */
+                width: 100%; /* Chiều rộng 100% */
+                z-index: 1000; /* Đảm bảo nó nằm trên các phần tử khác */
             }
 
             nav {
@@ -34,9 +38,8 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 50px;
+                height: 60px;
             }
-
 
 
             nav a {
@@ -76,6 +79,7 @@
             .others {
                 display: flex;
                 justify-content: center;
+                text-align: center;
             }
 
             .others button {
@@ -97,6 +101,7 @@
             .dropdown {
                 display: inline-block;
                 position: relative;
+                margin: 9px 5px;
             }
 
             .dropdown-content {
@@ -107,14 +112,133 @@
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
                 padding: 10px;
                 z-index: 1;
+                top: 100%; /* Hiển thị dropdown bên dưới icon user */
+                right: 0; /* Hiển thị dropdown từ bên phải của icon user */
             }
 
             .dropdown-content a {
                 font-size: 15px;
+                display: block;
+                padding: 8px 10px; /* Thêm khoảng cách giữa các mục */
+                text-align: left;
+                color: black; /* Màu chữ */
+                text-decoration: none;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
+            }
+
+
+
+            section {
+                padding: 20px;
+                text-align: center;
+            }
+
+            .product {
+                display: inline-block;
+                width: 25%;
+                height: auto;
+                margin: 10px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .product img {
+                width: 100%;
+            }
+
+            .product button {
+                background-color: antiquewhite;
+                color: black;
+                border: none; /* Loại bỏ đường viền của button */
+                cursor: pointer; /* Biến con trỏ thành hình tay khi di chuột qua button */
+                border-radius: 3px;
+                width: 100px;
+                height: 40px;
+
+            }
+
+            .product button:hover {
+                background-color: #ffcc00; /* Màu nền khi hover */
+                font-weight: 600;
+            }
+
+            /* CSS Style for Categories */
+            .categories {
+                display: flex;
+                justify-content: space-around;
+                background-image: url('img/PRODUCT/Background/Bakery.jpg'); /* Hình ảnh nền */
+                background-size: cover;
+                padding: 20px;
+                height: 500px;
+                align-items: center;
+            }
+
+            .category {
+                text-align: center;
+                color: white;
+            }
+
+            .category img {
+                width: 100%;
+                max-width: 200px; /* Đảm bảo hình ảnh không quá rộng */
+                border-radius: 10px; /* Bo tròn góc hình ảnh */
+            }
+
+            .category h3 {
+                margin-top: 10px;
+            }
+
+            .category a {
+                color: white;
+                text-decoration: none;
+            }
+
+            /* Hover effect */
+            .category:hover a {
+                transform: scale(1.1); /* Phóng to chữ khi di chuột vào */
+            }
+
+
+            .category:hover img {
+                transform: scale(1.1); /* Phóng to hình ảnh khi di chuột vào */
+            }
+
+            /* Hover effect for the entire category */
+            .category:hover {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi di chuột vào */
+            }
+
+            .img_center {
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .img_center img {
+                display: none;
+                max-width: 100%;
+                height: auto;
+            }
+
+
+            footer {
+                margin-top: 20px;
+                background-color: burlywood;
+                color: #f9f9f9;
+                text-align: center;
+                padding: 1em;
+                /* position: fixed; */
+                /* bottom: 0; */
+                width: 100%;
+            }
+
+            .badges:after {
+                content: attr(data-count);
             }
         </style>
     </head>
@@ -124,34 +248,52 @@
                 <div>
                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo"/>
                 </div>
+
                 <div class="menu">
-                    <a href="home.jsp" name>Home</a>
+                    <a href="home" name>Home</a>
                     <div class="dropdown">
                         <span>Products</span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
-                                <a href="product?cId=${ct.categoryId}">${ct.categoryName}</a> 
+                                <a href="product?type=${ct}">${ct}</a> <br>
                             </c:forEach>
                         </div>
                     </div>
-                    <a href="contact.jsp">Contact</a> <!<!-- check -->
+                    <a href="contact">Contact</a> <!<!-- check -->
                 </div>
+
                 <div class="others">
 
                     <form action="search" method="post">
                         <div class="search-container">
-                            <input type="text" name="search" id="searchInput" placeholder="Search">
+                            <input type="text" name="search" id="searchInput" placeholder="Search with name product">
                             <button type="submit"><i class="fas fa-search" id="searchIcon"></i></button>
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
-                    <a id="login" name="login" value="login" href="login.jsp">
-                        <i class="fas fa-user"></i>
-                    </a>
+                    <span class="dropdown">
+                        <c:choose>
+                            <c:when test="${empty requestScope.user}">
+                                <i class="fas fa-user"></i>
+                                <div class="dropdown-content">
+                                    <a href="login.jsp">Login</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                ${requestScope.user}
+                                <div class="dropdown-content">
+                                    <a href="sighOut">Sign Out</a>
+                                    <!-- Thêm các mục khác tại đây nếu cần -->
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
+
 
                 </div>
             </nav>

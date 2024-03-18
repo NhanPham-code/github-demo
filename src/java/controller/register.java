@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.loginDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
+import model.hashPasswordMD5;
 
 /**
  *
@@ -71,7 +74,42 @@ public class register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        hashPasswordMD5 md = new hashPasswordMD5();
+        // get value from jsp
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        //hash password
+        String hashPass = md.hashPasswordMD5(password);
+        
+        // set account register always role as user
+        String role = "user";
+        
+        // check acc register exists or not
+        loginDAO lDAO = new loginDAO();
+        Account check = lDAO.getAccountByUsername(username);
+        
+        if(check == null) {
+            Account accNew = new Account();
+            accNew.setUsername(username);
+            accNew.setPassword(hashPass);
+            accNew.setAddress(address);
+            accNew.setFullname(name);
+            accNew.setPhone(phone);
+            accNew.setRole(role);
+            // add to DB
+            lDAO.addNewAcc(accNew);
+            
+            //move to login.jsp
+            request.setAttribute("ac", accNew);
+            request.setAttribute("pass", password);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "this username is exists!!!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        }
     }
 
     /**
