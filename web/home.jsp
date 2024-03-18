@@ -239,6 +239,10 @@
                 /* bottom: 0; */
                 width: 100%;
             }
+
+            .badge:after {
+                content: attr(data-count);
+            }
         </style>
     </head>
     <body>
@@ -248,7 +252,7 @@
                 <div>
                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo"/>
                 </div>
-                
+
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
@@ -261,7 +265,7 @@
                     </div>
                     <a href="contact">Contact</a> <!<!-- check -->
                 </div>
-                
+
                 <div class="others">
 
                     <form action="search" method="post">
@@ -271,7 +275,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badge" data-count="0">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
