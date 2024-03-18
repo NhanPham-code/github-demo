@@ -179,6 +179,43 @@
                 margin-top: 10px;
             }
 
+            .add-new-product-btn {
+                background-color: antiquewhite;
+                text-decoration: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                align-items: center;
+                color: black;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+                width: 200px;
+                height: 40px;
+                margin-top: 10px;
+            }
+
+            .add-new-product-btn:hover {
+                background-color: #ffcc00;
+                font-weight: 600;
+            }
+
+            .update-btn {
+                background-color: antiquewhite;
+                color: black;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+                width: 100px;
+                height: 40px;
+                margin-top: 10px;
+            }
+
+            .update-btn:hover {
+                background-color: #ffcc00;
+                font-weight: 600;
+            }
+
             .add-to-cart-btn {
                 background-color: antiquewhite;
                 color: black;
@@ -194,6 +231,21 @@
                 background-color: #ffcc00;
                 font-weight: 600;
             }
+            .delete-btn {
+                background-color: antiquewhite;
+                color: black;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+                width: 100px;
+                height: 40px;
+                margin-top: 10px;
+            }
+
+            .delete-btn:hover {
+                background-color: #ffcc00;
+                font-weight: 600;
+            }
         </style>
     </head>
     <body>
@@ -205,7 +257,7 @@
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
-                        <span>Products</span>
+                        <span><a href="product?type=all">Products</a></span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
                                 <a href="product?type=${ct}">${ct}</a> <br>
@@ -247,7 +299,34 @@
                 </div>
             </nav>
         </header>
+        <%
+         Cookie cookie = null;
+         Cookie username = null;
+         Cookie role = null;
+         Cookie[] cookies = null;
+         
+         // Get an array of Cookies associated with the this domain
+         cookies = request.getCookies();
+         
+         
+        if(cookies!=null){  
+            for (int i = 0; i < cookies.length; i++) {
+               cookie = cookies[i];
+               if(cookie.getName().equals("username")){
+               username=cookie;
+               }
+               if(cookie.getName().equals("role")){
+               role=cookie;
+               }
+            }
+            }
+        %>
         <div class="left-section">
+            <% if (role != null && role.getValue().equals("admin")) { %>
+            <a href="addNewProduct.jsp" class="add-new-product-btn">Add new Product</a>
+            <% } %>
+
+
             <!-- Add your search tools and content for the left section here -->
             <form action="search" method="post">
                 <div class="search-container">
@@ -258,14 +337,31 @@
             <!-- Add other search tools or content as needed -->
         </div>
         <div class="right-section">
+
             <c:forEach var="p" items="${requestScope.listProduct}">
-                <a class="product-item" href="#">
-                    <form action="card" method="">
-                        <img src="${p.proImage}" alt="${p.proName}">
-                        <p>${p.proName}</p>
-                        <p>${p.price} $</p>
+
+                <a class="product-item" href="productDetail">
+
+                    <img src="${p.proImage}" alt="${p.proName}">
+                    <p>${p.proName}</p>
+                    <p>${p.price} $</p>
+                    <% if (role != null && role.getValue().equals("admin")) { %>
+                    <form action="updateProduct" method="get">
+                        <input type="hidden" name="id" value="${p.productID}">
+                        <button class="update-btn" type="submit">Update</button>
+                    </form>
+
+                    <form action="deleteProduct" method="get">
+                        <input type="hidden" name="id" value="${p.productID}">
+                        <button class="delete-btn" type="submit">Delete</button>
+                    </form>
+                    <% } else { %>
+                    <form action="addToCart" method="get">
+                        <input type="hidden" name="id" value="${p.productID}">
                         <button class="add-to-cart-btn" type="submit">Add to Cart</button>
                     </form>
+                    <% } %>
+
                 </a>
             </c:forEach>
         </div>

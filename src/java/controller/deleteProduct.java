@@ -9,20 +9,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import model.Product;
-
 /**
  *
- * @author Admin
+ * @author ADMIN
  */
-@WebServlet(name = "product", urlPatterns = {"/product"})
-public class product extends HttpServlet {
+@WebServlet(name = "deleteProduct", urlPatterns = {"/deleteProduct"})
+public class deleteProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class product extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet product</title>");
+            out.println("<title>Servlet deleteProduct</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet product at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,35 +58,13 @@ public class product extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-        String user = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username")) {
-                    user = cookie.getValue();
-                }
-            }
-        }
-        request.setAttribute("user", user);
-        ProductDAO pDAO = new ProductDAO();
-        String type = request.getParameter("type");
-
-        if (type.equals("all")) {
-            List<Product> listProduct = pDAO.getAllProduct();
-            request.setAttribute("listProduct", listProduct);
-        } else {
-
-            List<Product> listProduct = pDAO.getAllProductWithType(type);
-            request.setAttribute("listProduct", listProduct);
-        }
-
-        List<String> categoryList = pDAO.getAllType();
-
-        request.setAttribute(
-                "categoryList", categoryList);
-        request.getRequestDispatcher(
-                "product.jsp").forward(request, response);
-
+        Product p = new Product();
+        ProductDAO dao = new ProductDAO();   
+        String id = request.getParameter("id");
+        p=dao.getProductbyID(id);
+        
+        request.setAttribute("p", p);
+        request.getRequestDispatcher("deleteProduct.jsp").forward(request, response);
     }
 
     /**
@@ -104,7 +78,10 @@ public class product extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        ProductDAO dao = new ProductDAO(); 
+        String id = request.getParameter("id");
+        dao.deleteProduct(id);
+        response.sendRedirect("home");
     }
 
     /**
@@ -117,11 +94,4 @@ public class product extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public static void main(String[] args) {
-        ProductDAO pDAO = new ProductDAO();
-
-        List<Product> listProduct = pDAO.getAllProductWithType("Bread");
-        System.out.println(listProduct.get(1).getProName());
-
-    }
 }

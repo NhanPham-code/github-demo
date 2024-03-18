@@ -8,21 +8,24 @@ import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.servlet.http.Part;
+import java.nio.file.Paths;
 import model.Product;
 
 /**
  *
- * @author Admin
+ * @author ADMIN
  */
-@WebServlet(name = "product", urlPatterns = {"/product"})
-public class product extends HttpServlet {
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@WebServlet(name = "addNewProduct", urlPatterns = {"/addNewProduct"})
+public class addNewProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +44,10 @@ public class product extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet product</title>");
+            out.println("<title>Servlet addNewProduct</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet product at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet addNewProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,34 +65,6 @@ public class product extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-        String user = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username")) {
-                    user = cookie.getValue();
-                }
-            }
-        }
-        request.setAttribute("user", user);
-        ProductDAO pDAO = new ProductDAO();
-        String type = request.getParameter("type");
-
-        if (type.equals("all")) {
-            List<Product> listProduct = pDAO.getAllProduct();
-            request.setAttribute("listProduct", listProduct);
-        } else {
-
-            List<Product> listProduct = pDAO.getAllProductWithType(type);
-            request.setAttribute("listProduct", listProduct);
-        }
-
-        List<String> categoryList = pDAO.getAllType();
-
-        request.setAttribute(
-                "categoryList", categoryList);
-        request.getRequestDispatcher(
-                "product.jsp").forward(request, response);
 
     }
 
@@ -104,7 +79,55 @@ public class product extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Product p = new Product();
+        ProductDAO dao = new ProductDAO();
+        boolean error = false;
 
+        String proName = request.getParameter("proName");
+        String price_raw = request.getParameter("price");
+        String quantity_raw = request.getParameter("quantity");
+        String describe = request.getParameter("describe");
+        String typename = request.getParameter("typeName");
+
+        String productID = request.getParameter("productID");
+        p = dao.getProductbyID(productID);
+
+        if (p.getProName() != null) {
+            request.setAttribute("error3", "The ProID is already exist!");
+            error = true;
+        }
+
+        if (!error) {
+
+            int quantity = Integer.parseInt(quantity_raw);
+            float price = Float.parseFloat(price_raw);
+
+            Part part = request.getPart("proImage");
+            String filename = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+
+            // Lấy đường dẫn thực tế của thư mục images trong project
+            String realPath = getServletContext().getRealPath("/img/PRODUCT/" + typename);
+
+            // Lưu file vào thư mục images trong project với tên file giữ nguyên
+            String filePath = Paths.get(realPath, filename).toString();
+            part.write(filePath);
+
+            // Lấy đường dẫn tuyệt đối của file đã lưu
+            String absolutePath = "img/PRODUCT/" + typename + "/" + filename; // day la duong dan se luu trong DB
+
+            Product newProduct = new Product();
+            newProduct.setProductID(productID);
+            newProduct.setProName(proName);
+            newProduct.setPrice(price);
+            newProduct.setQuantity(quantity);
+            newProduct.setProImage(absolutePath);
+            newProduct.setDescribe(describe);
+            newProduct.setTypeName(typename);
+            dao.addNewProduct(newProduct);
+            response.sendRedirect("");
+        } else {
+            request.getRequestDispatcher("addNewProduct.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -117,11 +140,4 @@ public class product extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public static void main(String[] args) {
-        ProductDAO pDAO = new ProductDAO();
-
-        List<Product> listProduct = pDAO.getAllProductWithType("Bread");
-        System.out.println(listProduct.get(1).getProName());
-
-    }
 }

@@ -92,11 +92,118 @@ public class ProductDAO {
         return listProduct;
     }
 
+    public Product getProductbyID(String id) {
+        Product p = new Product();
+        String sql = "select * from Product where ProductID=?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return p;
+    }
+
+    public void addNewProduct(Product p) {
+
+        String sql = "INSERT INTO Product (ProductID, Price, Quantity, ProName, ProImage, Describe, TypeName) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, p.getProductID());
+
+            ps.setFloat(2, p.getPrice());
+            ps.setInt(3, p.getQuantity());
+            ps.setString(4, p.getProName());
+            ps.setString(5, p.getProImage());
+            ps.setString(6, p.getDescribe());
+            ps.setString(7, p.getTypeName());
+            rs = ps.executeQuery();
+        } catch (Exception ex) {
+            System.out.println();
+        }
+    }
+
+    public void updateProduct(Product p) {
+
+        String sql = "UPDATE [dbo].[Product]\n"
+                + "   SET [ProductID] = ?\n"
+                + "      ,[Price] = ?\n"
+                + "      ,[Quantity] = ?\n"
+                + "      ,[ProName] = ?\n"
+                + "      ,[ProImage] = ?\n"
+                + "      ,[Describe] = ?\n"
+                + "      ,[TypeName] = ?\n"
+                + " WHERE ProductID=?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, p.getProductID());
+            ps.setFloat(2, p.getPrice());
+            ps.setInt(3, p.getQuantity());
+            ps.setString(4, p.getProName());
+            ps.setString(5, p.getProImage());
+            ps.setString(6, p.getDescribe());
+            ps.setString(7, p.getTypeName());
+            ps.setString(8, p.getProductID());
+            rs = ps.executeQuery();
+        } catch (Exception ex) {
+            System.out.println();
+        }
+    }
+
+    public List<Product> getAllProduct() {
+        List<Product> list = new ArrayList<>();
+        String sql = "select * from Product";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+                list.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return list;
+    }
+
+    public void deleteProduct(String id) {
+        String sql = "delete from Product where ProductID=?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+
+        } catch (Exception ex) {
+            System.out.println();
+        }
+
+    }
+
     public static void main(String[] args) {
         ProductDAO pdao = new ProductDAO();
-        List<Product> typeList = pdao.getAllProductWithType("Bread");
-        for (int i = 0; i < typeList.size(); i++) {
-            System.out.println(typeList.get(i).getProName());
-        }
+
     }
 }
