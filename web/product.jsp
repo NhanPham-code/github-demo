@@ -340,7 +340,7 @@
 
             <c:forEach var="p" items="${requestScope.listProduct}">
 
-                <a class="product-item" href="productDetail">
+                <a class="product-item" href="productDetail?id=${p.productID}">
 
                     <img src="${p.proImage}" alt="${p.proName}">
                     <p>${p.proName}</p>

@@ -17,6 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bakery Shop</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -135,7 +136,7 @@
             .dropdown:hover .dropdown-content {
                 display: block;
             }
-            
+
             section {
                 padding: 20px;
                 text-align: center;
@@ -337,7 +338,7 @@
                 line-height: 42px;
                 color: #CD9B33;
             }
-            
+
             .posted_in{
                 text-decoration: none;
             }
@@ -357,6 +358,9 @@
                 content: attr(data-count);
             }
         </style>
+
+
+
     </head>
     <body>
 
@@ -417,42 +421,61 @@
         </header>
 
         <section class="section single-product single-section">
-            <div class="grid-container">
-                <div class="product-detail-inner">
-                    <div class="product-detail-img">
-                      <!-- <img src="${p.proImage}" alt="${p.proName}"> -->
-                        <img src="img/PRODUCT/Cake slice/Bunny.png" alt="bunny cake"/>
+            <c:set var="p" value="${requestScope.product}"></c:set>
+                <div class="grid-container">
+                    <div class="product-detail-inner">
+                        <div class="product-detail-img">
+                            <img src="${p.proImage}" alt="${p.proName}"> 
                     </div>   
-                    <div class="summary">
-                        <h1 class="product_title">Bunny Cake</h1>
-                        <p>100d</p>
-                        <!--<p>${p.proName}</p>
-                        <p>${p.price} $</p>
-                        -->
 
-                        <a class="cart" action="cart" method="get">
+                    <div class="summary">
+                        <div class="product_meta">
+                            <span class="posted_in">Catalogue:  <a href="" rel="tag">${p.typeName}</a></span>
+                        </div>
+                        <p>${p.proName}</p>
+                        <div class="product-description-inner">
+                            <h3 class="product_describe">Describe</h3>
+                            <p>${p.describe}</p>
+                        </div>
+                        <p>${p.price} $</p>
+                        <form class="cart" action="cart" method="get">
                             <div class="add-to-cart">
                                 <div class="quantity">
                                     <label class="screen-reader-text" for="8">Quantity</label>
-                                    <div class="hb_quantis">
-                                        <input type="button" value="-" class="qty_button minus">
-                                        <input type="number" id="8" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Quan" size="4" pattern="[0-9]*" inputmode="numeric">
-                                        <input type="button" value="+" class="qty_button plus">
+                                    <div class ="hb_quantis">
+                                        <input type="button" onclick="decreaseNumber()" value="-" class="qty_button minus">
+                                        <input type="text" id="quantityInput" class="input-text qty text" name="quantity" readonly>
+                                        <input type="button" onclick="increaseNumber()" value="+" class="qty_button plus">
                                     </div>
-                                </div>
+                                    <script>
+                                        let number = 1; // Initialize number with 2 as default
+                                        const quantityInput = document.getElementById('quantityInput');
+                                        updateNumber(); // Call updateNumber() to display the initial value
 
+                                        // Function to decrease number
+                                        function decreaseNumber() {
+                                            number = Math.max(1, number - 1); // Ensure number is at least 1
+                                            updateNumber();
+                                        }
+
+                                        // Function to increase number
+                                        function increaseNumber() {
+                                            number++; // Increment number
+                                            updateNumber();
+                                        }
+
+                                        // Function to update number on the interface
+                                        function updateNumber() {
+                                            quantityInput.value = number; // Update the input element value
+                                        }
+                                    </script>
+
+                                </div>
                                 <button type="submit" name="add-to-cart" value="" class="single_add_to_cart_button button alt">Add to cart</button>
                             </div>
-                            <div class="product_meta">
-                                <span class="posted_in">Catalogue:  <a href="" rel="tag">Bread</a></span>
-                            </div>
+
+                        </form>
                     </div>
-                </div>
-                <div class="product_summary">
-                    <div class="product-description-inner">
-                        <h3 class="product_describe">Describe</h3>
-                        <p>Bread with mushroom and cheese</p>
-                    </div>			
                 </div>
             </div>   
         </section>
