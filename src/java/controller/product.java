@@ -76,28 +76,33 @@ public class product extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         String type = request.getParameter("type");
 
+        
         if (type.equals("all")) {
             List<Product> listProduct = pDAO.getAllProduct();
             request.setAttribute("listProduct", listProduct);
         } else {
-
             List<Product> listProduct = pDAO.getAllProductWithType(type);
             request.setAttribute("listProduct", listProduct);
         }
 
+        
         List<String> categoryList = pDAO.getAllType();
-
-        request.setAttribute(
-                "categoryList", categoryList);
+        request.setAttribute("categoryList", categoryList);
         
-        getCookieCart getCart = new getCookieCart();
-        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
         
-        int size = cartItems.size();
+        Cookie[] cks = request.getCookies();
+        String size_raw = "0";
+        for (Cookie ck : cks) {
+            if (ck.getName().equals("size")) {
+                size_raw = ck.getValue();
+                break;
+            }
+        }
+        int size = Integer.parseInt(size_raw);
         request.setAttribute("size", size);
+       
         
-        request.getRequestDispatcher(
-                "product.jsp").forward(request, response);
+        request.getRequestDispatcher("product.jsp").forward(request, response);
 
     }
 

@@ -14,6 +14,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bakery Shop</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
             body {
@@ -41,7 +42,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 60px;
+                height: 80px;
             }
 
 
@@ -56,6 +57,7 @@
 
             nav a:hover {
                 color: #ffcc00; /* Màu chữ khi di chuột vào */
+                text-decoration: none;
             }
 
             nav span {
@@ -82,7 +84,6 @@
             .others {
                 display: flex;
                 justify-content: center;
-                text-align: center;
             }
 
             .others button {
@@ -95,8 +96,8 @@
 
 
             .others input {
-                width: 250px;
-                height: 25px;
+                width: 255px;
+                height: 26px;
                 border: #fff;
                 border-radius: 4px;
             }
@@ -275,7 +276,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="addToCart?id=22&quantity=0" class="badges" data-count="${requestScope.size}">
+                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
@@ -324,7 +325,7 @@
                     <img src="img/PRODUCT/Special/Rainbow.png" alt="rainbow cake"/>
                     <p>Delicious rainbow cake for your sweet tooth.</p>
                     <p>Price: $20</p>
-                    
+
                 </form>
             </div>
 
@@ -337,7 +338,7 @@
                     <img src="img/PRODUCT/Cake slice/Bunny.png" alt="bunny cake"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
-                    
+
                 </form>
             </div>
 
@@ -350,7 +351,7 @@
                     <img src="img/PRODUCT/Bread/Golden Lava Bun.png" alt="golden lava"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
-                    
+
                 </form>
             </div>
 

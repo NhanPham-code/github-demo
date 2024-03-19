@@ -4,13 +4,19 @@
  */
 package controller;
 
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import model.Product;
+import model.productCart;
 
 /**
  *
@@ -36,7 +42,7 @@ public class cartList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet cartList</title>");            
+            out.println("<title>Servlet cartList</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet cartList at " + request.getContextPath() + "</h1>");
@@ -57,7 +63,79 @@ public class cartList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ProductDAO pDAO = new ProductDAO();
+
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        // set value for cart.jsp
+        List<productCart> cartItems = getCartItemsFromCookies(request);
+
         
+
+            request.setAttribute("list", cartItems);
+
+            // cal total
+            float total = 0;
+            for (productCart cartItem : cartItems) {
+                total += cartItem.getProduct().getPrice() * cartItem.getQuantityTB();
+            }
+            request.setAttribute("total", total);
+
+            // get list type
+            List<String> categoryList = pDAO.getAllType();
+            request.setAttribute("categoryList", categoryList);
+
+        
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
+
+    }
+
+    private List<productCart> getCartItemsFromCookies(HttpServletRequest request) {
+        // get username
+        Cookie[] cks = request.getCookies();
+        String username = "";
+        for (Cookie ck : cks) {
+            if (ck.getName().equals("username")) {
+                username = ck.getValue();
+                break;
+            }
+        }
+
+        ProductDAO pDAO = new ProductDAO();
+        Cookie[] cookies = request.getCookies();
+        List<productCart> cartItems = new ArrayList<>();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("cart-" + username)) { // format cart-username
+                    if (cookie.getValue() == null) {
+                        return null;
+                    }
+                    String[] cartItem = cookie.getValue().split("-");
+                    //
+                    for (int i = 0; i < cartItem.length; i++) {
+                        String[] cart = cartItem[i].split("_");
+                        Product product = pDAO.getProductbyID(cart[0]);
+                        productCart pCart = new productCart();
+                        pCart.setProduct(product);
+                        pCart.setQuantityTB(Integer.parseInt(cart[1]));
+                        if (product != null) {
+                            cartItems.add(pCart);
+                        }
+                    }
+                    break; // Assuming there's only one "cart" cookie
+                }
+            }
+        }
+        return cartItems;
     }
 
     /**

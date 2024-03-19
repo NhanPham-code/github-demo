@@ -49,8 +49,13 @@
                 text-decoration: underline;
             }
             .total {
-                text-align: right;
+                text-align: left;
                 padding: 10px;
+            }
+
+            .place-order {
+                margin-top: 10px;
+                text-align: left;
             }
             header {
                 background-color: whitesmoke;
@@ -259,6 +264,22 @@
             .badges:after {
                 content: attr(data-count);
             }
+            .btn-place-order {
+                text-decoration: none;
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #ff7f50; /* Màu cam nhạt */
+                color: #fff; /* Màu chữ trắng */
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+            .btn-place-order:hover {
+                text-decoration: none;
+                background-color: #ff6347; /* Màu cam nhạt khi hover */
+            }
+
+
         </style>
     </head>
     <body>
@@ -339,8 +360,14 @@
                     </tr>
                 </c:forEach>
                 <tr class="total">
-                    <td colspan="5"><h2>Total: ${requestScope.total}$</h2></td>
+                    <td colspan="4"><h2>Total: ${requestScope.total}$</h2></td>
+                    <td>
+                        <div class="place-order">
+                            <a href="orderConfirm" class="btn-place-order">Order</a>
+                        </div>
+                    </td>
                 </tr>
+
             </tbody>
         </table>
     </body>

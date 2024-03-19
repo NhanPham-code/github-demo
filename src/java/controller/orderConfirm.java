@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.ProductDAO;
+import dao.loginDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,17 +13,18 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Product;
-import model.productCart;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import model.Account;
 
 /**
  *
- * @author Admin
+ * @author ADMIN
  */
-@WebServlet(name = "home", urlPatterns = {"/home"})
-public class home extends HttpServlet {
+@WebServlet(name = "orderConfirm", urlPatterns = {"/orderConfirm"})
+public class orderConfirm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +43,10 @@ public class home extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet home</title>");
+            out.println("<title>Servlet orderConfirm</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet home at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet orderConfirm at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,7 +64,10 @@ public class home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // check login
+        Account acc = new Account();
+        loginDAO ldao = new loginDAO();
+        
+        
         Cookie[] cookies = request.getCookies();
         String user = null;
         if (cookies != null) {
@@ -73,16 +77,18 @@ public class home extends HttpServlet {
                 }
             }
         }
-        request.setAttribute("user", user);
+        request.setAttribute("username", user);
         
-        // Get all type of product
-        ProductDAO pDAO = new ProductDAO();
-        List<String> categoryList = pDAO.getAllType();
-        request.setAttribute("categoryList", categoryList);
-        
-        
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        acc=ldao.getAccountByUsername(user);
+        request.setAttribute("acc", acc);
+   
+        request.getRequestDispatcher("orderConfirm.jsp").forward(request, response);
+
     }
+
+  
+
+    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -95,27 +101,9 @@ public class home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         // get productID by name
-        String name = request.getParameter("name");
-        String quantity = request.getParameter("quantity");
-        ProductDAO pDAO = new ProductDAO();
-        Product p = pDAO.getProductByName(name);
         
         
-        
-        String size_raw = "0";
-        
-        int size = Integer.parseInt(size_raw);
-        request.setAttribute("size", size);
-        
-        
-        HttpSession session = request.getSession();
-        session.setAttribute("productID", p.getProductID()); // save productID to cart
-        session.setAttribute("quantiy", quantity); // save quantiy to cart
-        
-        
-        response.sendRedirect("addToCart");
-        
+        response.sendRedirect("home");
     }
 
     /**

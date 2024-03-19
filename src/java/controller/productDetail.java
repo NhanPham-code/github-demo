@@ -65,7 +65,9 @@ public class productDetail extends HttpServlet {
         String id = request.getParameter("id");
         Product p = dao.getProductbyID(id);
         
+        
         request.setAttribute("product", p);
+        
         
         Cookie[] cookies = request.getCookies();
         String user = null;
@@ -78,15 +80,23 @@ public class productDetail extends HttpServlet {
         }
         request.setAttribute("user", user);
         
+        
         List<String> categoryList = dao.getAllType();
-
         request.setAttribute( "categoryList", categoryList);
         
-        getCookieCart getCart = new getCookieCart();
-        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
         
-        int size = cartItems.size();
+        Cookie[] cks = request.getCookies();
+        String size_raw = "0";
+        for (Cookie ck : cks) {
+            if (ck.getName().equals("size")) {
+                size_raw = ck.getValue();
+                break;
+            }
+        }
+        int size = Integer.parseInt(size_raw);
         request.setAttribute("size", size);
+        
+        
         request.getRequestDispatcher("detail.jsp").forward(request, response);
     }
 

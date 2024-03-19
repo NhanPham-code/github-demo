@@ -78,10 +78,15 @@ public class contact extends HttpServlet {
         }
         request.setAttribute("user", user);
         
-        getCookieCart getCart = new getCookieCart();
-        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
-        
-        int size = cartItems.size();
+        Cookie[] cks = request.getCookies();
+        String size_raw = "0";
+        for (Cookie ck : cks) {
+            if (ck.getName().equals("size")) {
+                size_raw = ck.getValue();
+                break;
+            }
+        }
+        int size = Integer.parseInt(size_raw);
         request.setAttribute("size", size);
         
         request.getRequestDispatcher("contact.jsp").forward(request, response);

@@ -5,13 +5,15 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bakery Shop</title>
+        <title>Home</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
@@ -304,12 +306,12 @@
         <header>
             <nav>
                 <div>
-                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo">
+                    <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo">
                 </div>
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
-                        <span>Products</span>
+                        <span><a href="product?type=all">Products</a></span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
                                 <a href="product?type=${ct}">${ct}</a> <br>
@@ -326,7 +328,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="addToCart?id=22&quantity=0" class="badges" data-count="${requestScope.size}">
+                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
