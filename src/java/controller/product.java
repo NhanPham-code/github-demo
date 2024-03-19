@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
+import model.productCart;
 
 /**
  *
@@ -88,6 +89,13 @@ public class product extends HttpServlet {
 
         request.setAttribute(
                 "categoryList", categoryList);
+        
+        getCookieCart getCart = new getCookieCart();
+        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
+        
+        int size = cartItems.size();
+        request.setAttribute("size", size);
+        
         request.getRequestDispatcher(
                 "product.jsp").forward(request, response);
 

@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.productCart;
 
 
 /**
@@ -64,6 +66,23 @@ public class contact extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
+        
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        
+        getCookieCart getCart = new getCookieCart();
+        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
+        
+        int size = cartItems.size();
+        request.setAttribute("size", size);
         
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }

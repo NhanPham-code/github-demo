@@ -339,7 +339,7 @@
                 color: #CD9B33;
             }
 
-            .posted_in{
+            .posted_in a{
                 text-decoration: none;
             }
 
@@ -373,7 +373,7 @@
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
-                        <span>Products</span>
+                        <span><a href="product?type=all">Products</a></span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
                                 <a href="product?type=${ct}">${ct}</a> <br>
@@ -392,7 +392,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badge" data-count="0">
+                    <a id="cart" name="cart" value="cart" href="addToCart?id=22&quantity=0" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
@@ -436,6 +436,7 @@
                                 <div class="quantity">
                                     <label class="screen-reader-text" for="8">Quantity</label>
                                     <div class ="hb_quantis">
+                                        <input type="hidden" name="id" value="${p.productID}">
                                         <input type="button" onclick="decreaseNumber()" value="-" class="qty_button minus">
                                         <input type="text" id="quantityInput" class="input-text qty text" name="quantity" readonly>
                                         <input type="button" onclick="increaseNumber()" value="+" class="qty_button plus">
@@ -463,11 +464,11 @@
                                         }
                                     </script>
                                 </div>
-                                <button type="submit" name="add-to-cart" value="" class="single_add_to_cart_button button alt">Add to cart</button>
+                                <button type="submit" name="add-to-cart" class="single_add_to_cart_button button alt">Add to cart</button>
                             </div>
                         </form>
                         <div class="product_meta">
-                            <span class="posted_in">Catalogue:  <a href="" rel="tag">${p.typeName}</a></span>
+                            <span class="posted_in">Catalogue:  <a href="product?type=${p.typeName}" rel="tag">${p.typeName}</a></span>
                         </div>
                     </div>
                 </div>

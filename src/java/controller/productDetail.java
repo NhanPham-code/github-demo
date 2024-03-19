@@ -9,10 +9,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import model.Product;
+import model.productCart;
 /**
  *
  * @author ADMIN
@@ -63,6 +66,27 @@ public class productDetail extends HttpServlet {
         Product p = dao.getProductbyID(id);
         
         request.setAttribute("product", p);
+        
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        
+        List<String> categoryList = dao.getAllType();
+
+        request.setAttribute( "categoryList", categoryList);
+        
+        getCookieCart getCart = new getCookieCart();
+        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
+        
+        int size = cartItems.size();
+        request.setAttribute("size", size);
         request.getRequestDispatcher("detail.jsp").forward(request, response);
     }
 

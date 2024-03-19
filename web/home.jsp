@@ -275,7 +275,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
+                    <a id="cart" name="cart" value="cart" href="addToCart?id=22&quantity=0" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
@@ -324,7 +324,7 @@
                     <img src="img/PRODUCT/Special/Rainbow.png" alt="rainbow cake"/>
                     <p>Delicious rainbow cake for your sweet tooth.</p>
                     <p>Price: $20</p>
-                    <button type="submit" name="button" value="rainbow">Add to Cart</button>
+                    
                 </form>
             </div>
 
@@ -337,7 +337,7 @@
                     <img src="img/PRODUCT/Cake slice/Bunny.png" alt="bunny cake"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
-                    <button type="submit" name="button" value="bunny">Add to Cart</button>
+                    
                 </form>
             </div>
 
@@ -350,7 +350,7 @@
                     <img src="img/PRODUCT/Bread/Golden Lava Bun.png" alt="golden lava"/>
                     <p>Soft and moist muffins bursting with blueberries.</p>
                     <p>Price: $15</p>
-                    <button type="submit" name="button" value="golden">Add to Cart</button>
+                    
                 </form>
             </div>
 

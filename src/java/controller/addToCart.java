@@ -71,6 +71,18 @@ public class addToCart extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         String productId = request.getParameter("id");
         String quantity_raw = request.getParameter("quantity");
+
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        
         int quantity = 0;
         if (quantity_raw != null) {
             quantity = Integer.parseInt(quantity_raw);
@@ -86,20 +98,24 @@ public class addToCart extends HttpServlet {
         }
 
         // Retrieve existing cart items from cookies
-        List<productCart> cartItems = getCartItemsFromCookies(request);
+        getCookieCart getCart = new getCookieCart();
+        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
+
+        int size = cartItems.size();
+        request.setAttribute("size", size);
 
         // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
         boolean productExists = false;
         for (productCart cartItem : cartItems) {
             if (cartItem.getProduct().getProductID().equals(productId)) {
                 // Nếu sản phẩm đã tồn tại, cập nhật số lượng
-                cartItem.setQuantityTB(cartItem.getQuantityTB() + 1);
+                cartItem.setQuantityTB(cartItem.getQuantityTB() + quantity);
                 productExists = true;
                 break;
             }
         }
 
-        if (!productExists) {
+        if (!productExists && quantity>0) {
             // create product cart
             productCart pCart = new productCart();
             pCart.setQuantityTB(quantity);
@@ -109,7 +125,9 @@ public class addToCart extends HttpServlet {
         }
 
         // Save the updated cart items in cookies
-        saveCartItemsToCookies(cartItems, response, request);
+        if (quantity > 0) {
+            saveCartItemsToCookies(cartItems, response, request);
+        }
 
         // set value for cart.jsp
         request.setAttribute("list", cartItems);
@@ -120,47 +138,12 @@ public class addToCart extends HttpServlet {
             total += cartItem.getProduct().getPrice() * cartItem.getQuantityTB();
         }
         request.setAttribute("total", total);
-        
-        int size = cartItems.size();
-        request.setAttribute("size", size);
+
+        List<String> categoryList = pDAO.getAllType();
+
+        request.setAttribute("categoryList", categoryList);
 
         request.getRequestDispatcher("cart.jsp").forward(request, response);
-    }
-
-    private List<productCart> getCartItemsFromCookies(HttpServletRequest request) {
-        // get username
-        Cookie[] cks = request.getCookies();
-        String username = "";
-        for (Cookie ck : cks) {
-            if (ck.getName().equals("username")) {
-                username = ck.getValue();
-                break;
-            }
-        }
-
-        ProductDAO pDAO = new ProductDAO();
-        Cookie[] cookies = request.getCookies();
-        List<productCart> cartItems = new ArrayList<>();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("cart-" + username)) { // format cart-username
-                    String[] cartItem = cookie.getValue().split("-");
-                    //
-                    for (int i = 0; i < cartItem.length; i++) {
-                        String [] cart = cartItem[i].split("_");
-                        Product product = pDAO.getProductbyID(cart[0]);
-                        productCart pCart = new productCart();
-                        pCart.setProduct(product);
-                        pCart.setQuantityTB(Integer.parseInt(cart[1]));
-                        if (product != null) {
-                            cartItems.add(pCart);
-                        }
-                    }
-                    break; // Assuming there's only one "cart" cookie
-                }
-            }
-        }
-        return cartItems;
     }
 
     private void saveCartItemsToCookies(List<productCart> cartItems, HttpServletResponse response, HttpServletRequest request) {
@@ -178,7 +161,7 @@ public class addToCart extends HttpServlet {
         for (productCart productCart : cartItems) {
             try {
                 cartItemsString.append(URLEncoder.encode(productCart.getProduct().getProductID(), "UTF-8")).
-                        append("_").append(URLEncoder.encode(productCart.getQuantityTB()+"", "UTF-8")).append("-");
+                        append("_").append(URLEncoder.encode(productCart.getQuantityTB() + "", "UTF-8")).append("-");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(addToCart.class.getName()).log(Level.SEVERE, null, ex);
             }

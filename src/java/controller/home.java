@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Product;
+import model.productCart;
 
 /**
  *
@@ -99,6 +100,12 @@ public class home extends HttpServlet {
         String quantity = request.getParameter("quantity");
         ProductDAO pDAO = new ProductDAO();
         Product p = pDAO.getProductByName(name);
+        
+        getCookieCart getCart = new getCookieCart();
+        List<productCart> cartItems = getCart.getCartItemsFromCookies(request);
+        
+        int size = cartItems.size();
+        request.setAttribute("size", size);
         
         HttpSession session = request.getSession();
         
