@@ -7,6 +7,7 @@
     <filter-mapping>
         <filter-name>loginFilter</filter-name>
         <url-pattern>/addToCart</url-pattern>
+        <url-pattern>/cart.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>home</servlet-name>
