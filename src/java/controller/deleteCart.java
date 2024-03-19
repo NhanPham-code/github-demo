@@ -13,7 +13,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -21,14 +20,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Product;
-import model.productCart;
 
 /**
  *
- * @author ADMIN
+ * @author Admin
  */
-@WebServlet(name = "addToCart", urlPatterns = {"/addToCart"})
-public class addToCart extends HttpServlet {
+@WebServlet(name = "deleteCart", urlPatterns = {"/deleteCart"})
+public class deleteCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,10 +45,10 @@ public class addToCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet addToCart</title>");
+            out.println("<title>Servlet deleteCart</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet addToCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteCart at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,66 +66,28 @@ public class addToCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO pDAO = new ProductDAO();
-        String productId = request.getParameter("id");
-        String quantity_raw = request.getParameter("quantity");
-        int quantity = 0;
-        if (quantity_raw != null) {
-            quantity = Integer.parseInt(quantity_raw);
-        }
-
-        // Assume getProductById retrieves product details from database based on ID
-        Product product = pDAO.getProductbyID(productId);
-
-        if (product == null) {
-            // Xử lý trường hợp không tìm thấy sản phẩm
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
-            return;
-        }
-
-        // Retrieve existing cart items from cookies
-        List<productCart> cartItems = getCartItemsFromCookies(request);
-
-        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
-        boolean productExists = false;
-        for (productCart cartItem : cartItems) {
-            if (cartItem.getProduct().getProductID().equals(productId)) {
-                // Nếu sản phẩm đã tồn tại, cập nhật số lượng
-                cartItem.setQuantityTB(cartItem.getQuantityTB() + 1);
-                productExists = true;
+        // get id
+        String id = request.getParameter("id");
+        
+        // create list items from cookie
+        List<Product> cartItems = getCartItemsFromCookies(request);
+        
+        // delete 1st product with id
+        for(int i = 0; i < cartItems.size(); i++) {
+            if(cartItems.get(i).getProductID().equals(id)) {
+                cartItems.remove(i);
                 break;
             }
         }
-
-        if (!productExists) {
-            // create product cart
-            productCart pCart = new productCart();
-            pCart.setQuantityTB(quantity);
-            pCart.setProduct(product);
-            // Nếu sản phẩm chưa tồn tại trong list, thêm mới vào giỏ hàng
-            cartItems.add(pCart);
-        }
-
-        // Save the updated cart items in cookies
-        saveCartItemsToCookies(cartItems, response, request);
-
-        // set value for cart.jsp
-        request.setAttribute("list", cartItems);
-
-        // cal total
-        float total = 0;
-        for (productCart cartItem : cartItems) {
-            total += cartItem.getProduct().getPrice() * cartItem.getQuantityTB();
-        }
-        request.setAttribute("total", total);
         
-        int size = cartItems.size();
-        request.setAttribute("size", size);
-
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        // save items list to cookie
+        saveCartItemsToCookies(cartItems, response, request);
+        
+        // respone to cart
+        response.sendRedirect("cartList");
     }
 
-    private List<productCart> getCartItemsFromCookies(HttpServletRequest request) {
+    private List<Product> getCartItemsFromCookies(HttpServletRequest request) {
         // get username
         Cookie[] cks = request.getCookies();
         String username = "";
@@ -140,20 +100,15 @@ public class addToCart extends HttpServlet {
 
         ProductDAO pDAO = new ProductDAO();
         Cookie[] cookies = request.getCookies();
-        List<productCart> cartItems = new ArrayList<>();
+        List<Product> cartItems = new ArrayList<>();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("cart-" + username)) { // format cart-username
-                    String[] cartItem = cookie.getValue().split("-");
-                    //
-                    for (int i = 0; i < cartItem.length; i++) {
-                        String [] cart = cartItem[i].split("_");
-                        Product product = pDAO.getProductbyID(cart[0]);
-                        productCart pCart = new productCart();
-                        pCart.setProduct(product);
-                        pCart.setQuantityTB(Integer.parseInt(cart[1]));
+                    String[] cartItemIds = cookie.getValue().split("-");
+                    for (String itemId : cartItemIds) {
+                        Product product = pDAO.getProductbyID(itemId);
                         if (product != null) {
-                            cartItems.add(pCart);
+                            cartItems.add(product);
                         }
                     }
                     break; // Assuming there's only one "cart" cookie
@@ -163,7 +118,7 @@ public class addToCart extends HttpServlet {
         return cartItems;
     }
 
-    private void saveCartItemsToCookies(List<productCart> cartItems, HttpServletResponse response, HttpServletRequest request) {
+    private void saveCartItemsToCookies(List<Product> cartItems, HttpServletResponse response, HttpServletRequest request) {
         // get username
         Cookie[] cks = request.getCookies();
         String username = "";
@@ -175,10 +130,9 @@ public class addToCart extends HttpServlet {
         }
 
         StringBuilder cartItemsString = new StringBuilder();
-        for (productCart productCart : cartItems) {
+        for (Product product : cartItems) {
             try {
-                cartItemsString.append(URLEncoder.encode(productCart.getProduct().getProductID(), "UTF-8")).
-                        append("_").append(URLEncoder.encode(productCart.getQuantityTB()+"", "UTF-8")).append("-");
+                cartItemsString.append(URLEncoder.encode(product.getProductID(), "UTF-8")).append("-");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(addToCart.class.getName()).log(Level.SEVERE, null, ex);
             }

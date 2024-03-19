@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,8 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "sighOut", urlPatterns = {"/sighOut"})
-public class sighOut extends HttpServlet {
+@WebServlet(name = "cartList", urlPatterns = {"/cartList"})
+public class cartList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +36,10 @@ public class sighOut extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet sighOut</title>");
+            out.println("<title>Servlet cartList</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet sighOut at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet cartList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,18 +57,7 @@ public class sighOut extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (!cookie.getName().contains("cart")) { // khong xoa cookie cart
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
-
-        response.sendRedirect("home");
+        
     }
 
     /**

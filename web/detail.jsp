@@ -431,7 +431,7 @@
                         <h1 class="product_title">${p.proName}</h1>
                         <p>${p.price} $</p>
 
-                        <form class="cart" action="cart" method="get">
+                        <form class="cart" action="addToCart" method="get">
                             <div class="add-to-cart">
                                 <div class="quantity">
                                     <label class="screen-reader-text" for="8">Quantity</label>
