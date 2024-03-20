@@ -246,6 +246,12 @@
                 background-color: #ffcc00;
                 font-weight: 600;
             }
+
+            
+
+            .badges:after {
+                content: attr(data-count);
+            }
         </style>
         <%
          Cookie cookie = null;
@@ -299,7 +305,7 @@
 
 
                     <% if (role != null && role.getValue().equals("admin")) { %>
-                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
+                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                     <%} else {%>
@@ -344,6 +350,21 @@
                 </div>
             </form>
             <!-- Add other search tools or content as needed -->
+
+            <!-- Form với radio buttons -->
+            <form action="search" method="get">
+                <label class="radio-container">Price Over 5
+                    <input type="radio" name="searchPrice" value="over">
+                    <span class="checkmark"></span>
+                </label>
+                <br>
+                <label class="radio-container">Price Lower 5
+                    <input type="radio" name="searchPrice" value="lower">
+                    <span class="checkmark"></span>
+                </label>
+                <br>
+                <button type="submit">Save</button>
+            </form>
         </div>
         <div class="right-section">
 

@@ -66,6 +66,7 @@ public class home extends HttpServlet {
         // check login
         Cookie[] cookies = request.getCookies();
         String user = null;
+        String size = "0";
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("username")) {
@@ -73,14 +74,27 @@ public class home extends HttpServlet {
                 }
             }
         }
-        request.setAttribute("user", user);
+
+        if (user != null) {
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("cartSize-"+user)) {
+                        size = cookie.getValue();
+                    }
+                }
+            }
+        } else {
+            size = "0";
+        }
         
+        request.setAttribute("user", user);
+        request.setAttribute("size", size);
+
         // Get all type of product
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
-        
+
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
@@ -95,27 +109,23 @@ public class home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         // get productID by name
+        // get productID by name
         String name = request.getParameter("name");
         String quantity = request.getParameter("quantity");
         ProductDAO pDAO = new ProductDAO();
         Product p = pDAO.getProductByName(name);
-        
-        
-        
+
         String size_raw = "0";
-        
+
         int size = Integer.parseInt(size_raw);
         request.setAttribute("size", size);
-        
-        
+
         HttpSession session = request.getSession();
         session.setAttribute("productID", p.getProductID()); // save productID to cart
         session.setAttribute("quantiy", quantity); // save quantiy to cart
-        
-        
+
         response.sendRedirect("addToCart");
-        
+
     }
 
     /**

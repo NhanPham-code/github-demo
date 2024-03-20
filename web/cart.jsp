@@ -261,9 +261,11 @@
                 max-width: 100%;
                 height: auto;
             }
+
             .badges:after {
                 content: attr(data-count);
             }
+
             .btn-place-order {
                 text-decoration: none;
                 display: inline-block;
@@ -312,19 +314,19 @@
                         </div>
                     </form>
 
-                     <%
-                        Cookie[] cookies = request.getCookies();
-                         String role = null;
-                         if (cookies != null) {
-                           for (Cookie cookie : cookies) {
-                              if (cookie.getName().equals("role")) {
-                                 role = cookie.getValue();
-                                 }
-                              }
-                    }
+                    <%
+                       Cookie[] cookies = request.getCookies();
+                        String role = null;
+                        if (cookies != null) {
+                          for (Cookie cookie : cookies) {
+                             if (cookie.getName().equals("role")) {
+                                role = cookie.getValue();
+                                }
+                             }
+                   }
                     
-                    if(role != null && role.equals("admin")){%>
-                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
+                   if(role != null && role.equals("admin")){%>
+                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                     <%} else {%>

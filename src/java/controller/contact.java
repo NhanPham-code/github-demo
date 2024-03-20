@@ -72,7 +72,19 @@ public class contact extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-
+        
+        // get username
+        Cookie [] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+        
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }
 
@@ -104,7 +116,7 @@ public class contact extends HttpServlet {
         request.setAttribute("categoryList", categoryList);
         
         //Mail send
-        final String from = "simpyaoimlemmlem@gmail.com";
+        final String from = "simpyaoimlemmlem@gmail.com"; 
         final String password = "lpbvoftauerkxelt";
         final String to = "cakywordvietnam@gmail.com";
 

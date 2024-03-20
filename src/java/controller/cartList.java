@@ -66,9 +66,14 @@ public class cartList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDAO pDAO = new ProductDAO();
-
+        
+        // set value for cart.jsp
+        List<productCart> cartItems = getCartItemsFromCookies(request);
+        request.setAttribute("list", cartItems);
+        
         Cookie[] cookies = request.getCookies();
         String user = null;
+        String size = "";
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("username")) {
@@ -76,16 +81,26 @@ public class cartList extends HttpServlet {
                 }
             }
         }
+
+        if (user != null) {
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("cartSize-"+user)) {
+                        size = cookie.getValue();
+                    }
+                }
+            }
+        } else {
+            size = "0";
+        }
+
         request.setAttribute("user", user);
+        request.setAttribute("size", size);
 
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
 
-        // set value for cart.jsp
-        List<productCart> cartItems = getCartItemsFromCookies(request);
-
-        request.setAttribute("list", cartItems);
-
+        
         // cal total
         float total = 0;
         for (productCart cartItem : cartItems) {
@@ -93,7 +108,7 @@ public class cartList extends HttpServlet {
         }
         request.setAttribute("total", total);
 
-        // get list type
+        
         request.getRequestDispatcher("cart.jsp").forward(request, response);
 
     }

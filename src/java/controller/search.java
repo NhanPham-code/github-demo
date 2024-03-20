@@ -40,7 +40,7 @@ public class search extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet search</title>");            
+            out.println("<title>Servlet search</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet search at " + request.getContextPath() + "</h1>");
@@ -61,7 +61,39 @@ public class search extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ProductDAO pDAO = new ProductDAO();
+
+        // check login
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+
+        // get Categories List
+        List<String> categoryList = pDAO.getAllType();
+        request.setAttribute("categoryList", categoryList);
+        
+        // get search List by price
+        String searchPrice = request.getParameter("searchPrice");
+
+        if (searchPrice != null) {
+            if (searchPrice.equals("over")) {
+                List<Product> listProduct = pDAO.getAllProductByOver(5);
+                request.setAttribute("listProduct", listProduct);
+            } else if (searchPrice.equals("lower")) {
+                List<Product> listProduct = pDAO.getAllProductByLower(5);
+                request.setAttribute("listProduct", listProduct);
+            }
+        }
+
+        //  move to product.jsp
+        request.getRequestDispatcher("product.jsp").forward(request, response);
     }
 
     /**
@@ -86,19 +118,18 @@ public class search extends HttpServlet {
             }
         }
         request.setAttribute("user", user);
-        
-        
+
         String searchString = request.getParameter("search");
         ProductDAO pDAO = new ProductDAO();
-        
+
         // get List Product By seacrh name
         List<Product> listProduct = pDAO.getAllProductByName(searchString);
         request.setAttribute("listProduct", listProduct);
-        
+
         // get Categories List
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
+
         //  move to product.jsp
         request.getRequestDispatcher("product.jsp").forward(request, response);
     }

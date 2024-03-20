@@ -91,9 +91,18 @@ public class deleteCart extends HttpServlet {
             }
         }
 
+        // set size of list product in cart
+        String size = String.valueOf(cartItems.size());
+
         if (!cartItems.isEmpty()) {
             // save items list to cookie
             saveCartItemsToCookies(cartItems, response, request);
+            //size cart
+            Cookie cartSize = new Cookie("cartSize-" + username, size);
+
+            cartSize.setMaxAge(60 * 60 * 24 * 60); // set 60 days
+
+            response.addCookie(cartSize);
             // respone to cart
             response.sendRedirect("cartList");
         } else {
@@ -101,8 +110,16 @@ public class deleteCart extends HttpServlet {
             cartCookie.setMaxAge(0); // Cookie expires in 60 days
             cartCookie.setPath("/");
             response.addCookie(cartCookie);
+            //delete size
+            Cookie cartSize = new Cookie("cartSize-" + username, size);
+
+            cartSize.setMaxAge(0); // set 60 days
+
+            response.addCookie(cartSize);
+            
             response.sendRedirect("cartList");
         }
+
     }
 
     private List<productCart> getCartItemsFromCookies(HttpServletRequest request) {

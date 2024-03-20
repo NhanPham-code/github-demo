@@ -138,7 +138,7 @@
             .product {
                 display: inline-block;
                 width: 25%;
-                height: autopx;
+                height: auto;
                 margin: 10px;
                 padding: 20px;
                 border: 1px solid #ccc;
@@ -326,7 +326,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 

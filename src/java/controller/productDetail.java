@@ -71,10 +71,13 @@ public class productDetail extends HttpServlet {
         
         Cookie[] cookies = request.getCookies();
         String user = null;
+        String size = "";
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("username")) {
                     user = cookie.getValue();
+                }else if (cookie.getName().equals("cartSize")) {
+                    size = cookie.getValue();
                 }
             }
         }
@@ -83,18 +86,6 @@ public class productDetail extends HttpServlet {
         
         List<String> categoryList = dao.getAllType();
         request.setAttribute( "categoryList", categoryList);
-        
-        
-        Cookie[] cks = request.getCookies();
-        String size_raw = "0";
-        for (Cookie ck : cks) {
-            if (ck.getName().equals("size")) {
-                size_raw = ck.getValue();
-                break;
-            }
-        }
-        int size = Integer.parseInt(size_raw);
-        request.setAttribute("size", size);
         
         
         request.getRequestDispatcher("detail.jsp").forward(request, response);

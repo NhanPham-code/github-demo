@@ -65,6 +65,7 @@ public class product extends HttpServlet {
             throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
         String user = null;
+        String size = "";
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("username")) {
@@ -72,11 +73,25 @@ public class product extends HttpServlet {
                 }
             }
         }
+
+        if (user != null) {
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("cartSize-"+user)) {
+                        size = cookie.getValue();
+                    }
+                }
+            }
+        } else {
+            size = "0";
+        }
+
         request.setAttribute("user", user);
+        request.setAttribute("size", size);
+
         ProductDAO pDAO = new ProductDAO();
         String type = request.getParameter("type");
 
-        
         if (type.equals("all")) {
             List<Product> listProduct = pDAO.getAllProduct();
             request.setAttribute("listProduct", listProduct);
@@ -85,23 +100,9 @@ public class product extends HttpServlet {
             request.setAttribute("listProduct", listProduct);
         }
 
-        
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
-        
-        Cookie[] cks = request.getCookies();
-        String size_raw = "0";
-        for (Cookie ck : cks) {
-            if (ck.getName().equals("size")) {
-                size_raw = ck.getValue();
-                break;
-            }
-        }
-        int size = Integer.parseInt(size_raw);
-        request.setAttribute("size", size);
-       
-        
+
         request.getRequestDispatcher("product.jsp").forward(request, response);
 
     }

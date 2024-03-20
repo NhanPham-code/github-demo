@@ -68,12 +68,15 @@ public class addToCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // get product ID and quantity
         ProductDAO pDAO = new ProductDAO();
         String productId = request.getParameter("id");
         String quantity_raw = request.getParameter("quantity");
 
+        // get user from cookie
         Cookie[] cookies = request.getCookies();
         String user = null;
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("username")) {
@@ -83,6 +86,7 @@ public class addToCart extends HttpServlet {
         }
         request.setAttribute("user", user);
 
+        // parse value for quantity
         int quantity = 0;
         if (quantity_raw != null) {
             quantity = Integer.parseInt(quantity_raw);
@@ -111,6 +115,7 @@ public class addToCart extends HttpServlet {
             }
         }
 
+        // add new product if it is not exists
         if (!productExists && quantity > 0) {
             // create product cart
             productCart pCart = new productCart();
@@ -139,6 +144,17 @@ public class addToCart extends HttpServlet {
 
         request.setAttribute("categoryList", categoryList);
 
+        // set size of list product in cart
+        String size = String.valueOf(cartItems.size());
+
+        Cookie cartSize = new Cookie("cartSize-"+user, size);
+
+        cartSize.setMaxAge(60 * 60 * 24 * 60); // set 60 days
+
+        response.addCookie(cartSize);
+        
+        request.setAttribute("size", size);
+
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
@@ -162,9 +178,13 @@ public class addToCart extends HttpServlet {
                     if (cookie.getValue() == null) {
                         return null;
                     }
+                    // format cartItem1 - cartItem2
                     String[] cartItem = cookie.getValue().split("-");
                     //
                     for (int i = 0; i < cartItem.length; i++) {
+                        // format cartItem: 1_3
+                        // first number is productID
+                        // second number is Quantity of this product
                         String[] cart = cartItem[i].split("_");
                         Product product = pDAO.getProductbyID(cart[0]);
                         productCart pCart = new productCart();

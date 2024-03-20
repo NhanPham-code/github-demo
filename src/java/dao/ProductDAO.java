@@ -114,7 +114,7 @@ public class ProductDAO {
         }
         return p;
     }
-    
+
     public Product getProductByName(String name) {
         Product p = new Product();
         String sql = "select * from Product where ProName = ?";
@@ -223,6 +223,58 @@ public class ProductDAO {
             System.out.println();
         }
 
+    }
+
+    public List<Product> getAllProductByOver(int price) {
+        List<Product> list = new ArrayList<>();
+        String sql = "select * from Product\n"
+                + "where Price >= ?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, price);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+                list.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return list;
+    }
+
+    public List<Product> getAllProductByLower(int price) {
+        List<Product> list = new ArrayList<>();
+        String sql = "select * from Product\n"
+                + "where Price <= ?";
+        try {
+            conn = db.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, price);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductID(rs.getString("ProductID"));
+                p.setPrice(rs.getFloat("Price"));
+                p.setProImage(rs.getString("ProImage"));
+                p.setProName(rs.getString("ProName"));
+                p.setQuantity(rs.getInt("Quantity"));
+                p.setDescribe(rs.getString("Describe"));
+                p.setTypeName(rs.getString("TypeName"));
+                list.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println();
+        }
+        return list;
     }
 
     public static void main(String[] args) {

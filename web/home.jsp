@@ -289,7 +289,7 @@
                     }
                     
                     if(role != null && role.equals("admin")){%>
-                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
+                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                     <%} else {%>

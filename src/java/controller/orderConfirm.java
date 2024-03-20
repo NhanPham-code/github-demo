@@ -89,6 +89,7 @@ public class orderConfirm extends HttpServlet {
                 }
             }
         }
+
         if (checkCartEmpty == false) {
             request.setAttribute("username", user);
 
@@ -96,7 +97,7 @@ public class orderConfirm extends HttpServlet {
             request.setAttribute("acc", acc);
 
             request.getRequestDispatcher("orderConfirm.jsp").forward(request, response);
-        } else{
+        } else {
             request.setAttribute("emptyCart", "Your cart is empty now! Please add to cart before confirm order!");
             request.getRequestDispatcher("cartList").forward(request, response);
         }
@@ -132,7 +133,9 @@ public class orderConfirm extends HttpServlet {
         for (productCart cartItem : cartItems) {
             total += cartItem.getProduct().getPrice() * cartItem.getQuantityTB();
         }
+
         invoiceDAO idao = new invoiceDAO();
+        // auto create invoiceID
         String invoiceID = idao.getInvoiceID();
 
         order.setCusAddress(cusAddress);
@@ -152,10 +155,17 @@ public class orderConfirm extends HttpServlet {
             idao.addNewInvoiceDetail(orderDetail);
         }
 
+        // delete cart after order
         Cookie cartCookie = new Cookie("cart-" + username, username); // format cart-username
         cartCookie.setMaxAge(0); // Cookie expires in 60 days
         cartCookie.setPath("/");
         response.addCookie(cartCookie);
+
+        // delete cart size
+        Cookie cartSize = new Cookie("cartSize-" + username, "0");
+        cartSize.setMaxAge(0); // set 60 days
+        response.addCookie(cartSize);
+        
         response.sendRedirect("cartList");
 
     }
