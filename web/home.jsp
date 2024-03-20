@@ -230,6 +230,29 @@
             }
 
 
+            .footer{
+                display: flex;
+            }
+
+            .img_logo2 img{
+                width: 200px;
+                height: 100%;
+            }
+            .infomation_list2{
+                margin-left: 300px;
+                margin-top: 30px;
+            }
+
+            .infomation li {
+                display: unset;
+            }
+            .infomation_inner{
+                display: flex;
+            }
+            .infomation_text{
+                margin-left: 10px;
+            }
+            
             footer {
                 margin-top: 20px;
                 background-color: burlywood;
@@ -240,6 +263,7 @@
                 /* bottom: 0; */
                 width: 100%;
             }
+
 
             .badges:after {
                 content: attr(data-count);
@@ -416,8 +440,43 @@
 
 
     <footer>
-        <p>&copy; 2024 Bakery Shop. All rights reserved.</p> <br>
+        <ul>
+            <li class="footer">
+                <div class="img_logo2">
+                    <img id="logo" src="img/LOGO/logo.png" alt="logo"/>
+                </div>
+                <div class="infomation_list2">
+                    <div class="infomation_inner">
+                        <div class="infomation_svg">
+                            <i class="fa fa-location-arrow"></i>                                         
+                        </div>
+                        <div class="infomation_text">
+                            600, đường Nguyễn Văn Cừ (nối dài), phường An Bình, quận Ninh Kiều, TP. Cần Thơ                                 
+                        </div>
+                        <br>
+                    </div>
+                    <div class="infomation_inner">
+                        <div class="infomation_svg">
+                            <i class="fa fa-envelope-open"></i>                                   
+                        </div>
+                        <div class="infomation_text">
+                            cakywordvietnam@gmail.com                              
+                        </div>
+                        <br>
+                    </div>
 
+                    <div class="infomation_inner">
+                        <div class="infomation_svg">
+                            <i class="fa fa-phone"></i>                                    
+                        </div>
+                        <div class="infomation_text">
+                            093 974 0742 (08h00 – 17h00); 091 575 1200  (07h00 – 22h00)                               
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <p>&copy; 2024 Bakery Shop. All rights reserved.</p> <br>
     </footer>
 
     <script>

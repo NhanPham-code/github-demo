@@ -72,9 +72,9 @@ public class contact extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
+
         // get username
-        Cookie [] cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         String user = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -84,7 +84,7 @@ public class contact extends HttpServlet {
             }
         }
         request.setAttribute("user", user);
-        
+
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }
 
@@ -114,9 +114,9 @@ public class contact extends HttpServlet {
 
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
+
         //Mail send
-        final String from = "simpyaoimlemmlem@gmail.com"; 
+        final String from = "simpyaoimlemmlem@gmail.com";
         final String password = "lpbvoftauerkxelt";
         final String to = "cakywordvietnam@gmail.com";
 
@@ -131,10 +131,10 @@ public class contact extends HttpServlet {
                 + text;
         // Properties : khai báo các thuộc tính
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP HOST
-        props.put("mail.smtp.port", "587"); // TLS 587 SSL 465
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP HOST gửi tin nhắn cho người dùng máy tính khác dựa trên địa chỉ e-mail.
+        props.put("mail.smtp.port", "587"); // TLS 587 SSL 465 giao thức bảo mật được sử dụng để bảo vệ thông tin khi truyền qua mạng.
+        props.put("mail.smtp.auth", "true"); // cho phép đăng nhập
+        props.put("mail.smtp.starttls.enable", "true"); //giao thức email để tăng tính bảo mật bằng cách mã hoá thông tin trước khi gửi qua kết nối TLS
 
         Authenticator auth = new Authenticator() {
             @Override
@@ -143,20 +143,19 @@ public class contact extends HttpServlet {
                 return new PasswordAuthentication(from, password);
             }
         };
+
         //Session
         Session session = Session.getInstance(props, auth);
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            InternetAddress.parse(to);
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
-            message.setSubject("Contact");
-            message.setContent(content,"text/HTML; charset=UTF-8");
-            Transport.send(message);
+            Message message = new MimeMessage(session); // tạo thư điện tử theo định dạng MIME
+            message.setFrom(new InternetAddress(from)); //tạo địa chỉ thư gửi đi (người gửi)
+            InternetAddress.parse(to); // địa chỉ thư gửi đến
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false)); // kiểm tra địa chỉ người nhận
+            message.setSubject("Contact"); // tiêu đề thư
+            message.setContent(content, "text/HTML; charset=UTF-8"); // ndung thư, cho phép tiếng viêt
+            Transport.send(message); // gửi thư
         } catch (Exception e) {
         }
-        
-        
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
@@ -170,5 +169,5 @@ public class contact extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-   
+
 }
