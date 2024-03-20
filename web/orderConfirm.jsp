@@ -12,7 +12,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Add New Customer</title>
-        <style>
+      <style>
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -76,24 +76,24 @@
     </head>
     <body>
 
-        <br>
         <div class="container">
-            <h1>Add New Customer</h1>
+            <h1>Order Confirm</h1>
             <c:set var="c" value="${requestScope.acc}"></c:set>
-            <form action="orderConfirm" method="POST" enctype="multipart/form-data">
-                <label for="customerName">Customer Name:</label>
-                <input type="text" name="customerName" value="${c.fullname}" required>
-                
+                <form action="orderConfirm" method="POST">
+
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" name="customerName" value="${c.fullname}" required>
+
                 <label for="cusAddress">Customer Address:</label>
                 <input type="text" name="cusAddress" value="${c.address}" required>
-                
+
                 <label for="cusPhone">Customer Phone:</label>
                 <input type="text" name="cusPhone" value="${c.phone}" required>
 
                 <label for="username">Username:</label>
-                <input type="text" name="username" value="${requestScope.username}" readonly>
+                <input type="text" name="username" value="${requestScope.username}" required>
 
-                <input type="submit" value="Add Customer">
+                <input type="submit" value="Confirm">
             </form>
         </div>
     </body>

@@ -74,16 +74,17 @@
         </style>
     </head>
     <body>
-       
-        <br>
-        <% String error3 = (String) request.getAttribute("error3"); %>
-        <% if (error3 != null) { %>
-        <div style="color: red;"><%= error3 %></div>
-        <% } %>
+
+        
         <div class="container">
             <h1>Add New Product</h1>
 
             <form action="addNewProduct" method="POST" enctype="multipart/form-data">
+                <br>
+                <% String error3 = (String) request.getAttribute("error3"); %>
+                <% if (error3 != null) { %>
+                <div style="color: red;"><%= error3 %></div>
+                <% } %>
                 <label for="productID">Product ID:</label>
                 <input type="text" name="productID" required>
 

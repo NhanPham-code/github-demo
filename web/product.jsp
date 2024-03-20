@@ -247,6 +247,28 @@
                 font-weight: 600;
             }
         </style>
+        <%
+         Cookie cookie = null;
+         Cookie username = null;
+         Cookie role = null;
+         Cookie[] cookies = null;
+         
+         // Get an array of Cookies associated with the this domain
+         cookies = request.getCookies();
+         
+         
+        if(cookies!=null){  
+            for (int i = 0; i < cookies.length; i++) {
+               cookie = cookies[i];
+               if(cookie.getName().equals("username")){
+               username=cookie;
+               }
+               if(cookie.getName().equals("role")){
+               role=cookie;
+               }
+            }
+            }
+        %>
     </head>
     <body>
         <header>
@@ -274,9 +296,17 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
+
+
+                    <% if (role != null && role.getValue().equals("admin")) { %>
+                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
+                    <%} else {%>
+                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a><%}
+                    %>
 
                     <span class="dropdown">
                         <c:choose>
@@ -299,28 +329,7 @@
                 </div>
             </nav>
         </header>
-        <%
-         Cookie cookie = null;
-         Cookie username = null;
-         Cookie role = null;
-         Cookie[] cookies = null;
-         
-         // Get an array of Cookies associated with the this domain
-         cookies = request.getCookies();
-         
-         
-        if(cookies!=null){  
-            for (int i = 0; i < cookies.length; i++) {
-               cookie = cookies[i];
-               if(cookie.getName().equals("username")){
-               username=cookie;
-               }
-               if(cookie.getName().equals("role")){
-               role=cookie;
-               }
-            }
-            }
-        %>
+
         <div class="left-section">
             <% if (role != null && role.getValue().equals("admin")) { %>
             <a href="addNewProduct.jsp" class="add-new-product-btn">Add new Product</a>

@@ -14,8 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.productCart;
-
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -41,7 +47,7 @@ public class contact extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet contact</title>");            
+            out.println("<title>Servlet contact</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet contact at " + request.getContextPath() + "</h1>");
@@ -66,29 +72,7 @@ public class contact extends HttpServlet {
         ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
-        
-        Cookie[] cookies = request.getCookies();
-        String user = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username")) {
-                    user = cookie.getValue();
-                }
-            }
-        }
-        request.setAttribute("user", user);
-        
-        Cookie[] cks = request.getCookies();
-        String size_raw = "0";
-        for (Cookie ck : cks) {
-            if (ck.getName().equals("size")) {
-                size_raw = ck.getValue();
-                break;
-            }
-        }
-        int size = Integer.parseInt(size_raw);
-        request.setAttribute("size", size);
-        
+
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }
 
@@ -103,7 +87,65 @@ public class contact extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ProductDAO pDAO = new ProductDAO();
+
+        Cookie[] cookies = request.getCookies();
+        String user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("username")) {
+                    user = cookie.getValue();
+                }
+            }
+        }
+        request.setAttribute("user", user);
+
+        List<String> categoryList = pDAO.getAllType();
+        request.setAttribute("categoryList", categoryList);
+        
+        //Mail send
+        final String from = "simpyaoimlemmlem@gmail.com";
+        final String password = "lpbvoftauerkxelt";
+        final String to = "cakywordvietnam@gmail.com";
+
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String text = request.getParameter("text");
+
+        String content = fullname + "\n"
+                + email + "\n"
+                + phone + "\n"
+                + text;
+        // Properties : khai báo các thuộc tính
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP HOST
+        props.put("mail.smtp.port", "587"); // TLS 587 SSL 465
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Authenticator auth = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                // TODO Auto-generated method stub
+                return new PasswordAuthentication(from, password);
+            }
+        };
+        //Session
+        Session session = Session.getInstance(props, auth);
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            InternetAddress.parse(to);
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+            message.setSubject("Contact");
+            message.setContent(content,"text/HTML; charset=UTF-8");
+            Transport.send(message);
+        } catch (Exception e) {
+        }
+        
+        
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     /**
@@ -112,8 +154,9 @@ public class contact extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
+
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+   
 }

@@ -1,29 +1,62 @@
 <%-- 
-    Document   : home
-    Created on : Feb 6, 2024, 3:20:06 PM
+    Document   : cart
+    Created on : Feb 14, 2024, 4:55:29 PM
     Author     : Admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bakery Shop</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Cart</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
             body {
                 font-family: Arial, sans-serif;
+                background-color: #f7f7f7;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
+            }
+            h1 {
+                text-align: center;
+                margin-top: 20px;
+            }
+            table {
+                width: 80%;
+                margin: 20px auto;
+                border-collapse: collapse;
+                background-color: #fff;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            img {
+                display: block;
+                margin: auto;
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            .total {
+                text-align: left;
+                padding: 10px;
             }
 
+            .place-order {
+                margin-top: 10px;
+                text-align: left;
+            }
             header {
                 background-color: whitesmoke;
                 text-align: center;
@@ -42,7 +75,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 80px;
+                height: 60px;
             }
 
 
@@ -57,7 +90,6 @@
 
             nav a:hover {
                 color: #ffcc00; /* Màu chữ khi di chuột vào */
-                text-decoration: none;
             }
 
             nav span {
@@ -84,6 +116,7 @@
             .others {
                 display: flex;
                 justify-content: center;
+                text-align: center;
             }
 
             .others button {
@@ -96,8 +129,8 @@
 
 
             .others input {
-                width: 255px;
-                height: 26px;
+                width: 250px;
+                height: 25px;
                 border: #fff;
                 border-radius: 4px;
             }
@@ -228,26 +261,29 @@
                 max-width: 100%;
                 height: auto;
             }
-
-
-            footer {
-                margin-top: 20px;
-                background-color: burlywood;
-                color: #f9f9f9;
-                text-align: center;
-                padding: 1em;
-                /* position: fixed; */
-                /* bottom: 0; */
-                width: 100%;
-            }
-
             .badges:after {
                 content: attr(data-count);
             }
+            .btn-place-order {
+                text-decoration: none;
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #ff7f50; /* Màu cam nhạt */
+                color: #fff; /* Màu chữ trắng */
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+            .btn-place-order:hover {
+                text-decoration: none;
+                background-color: #ff6347; /* Màu cam nhạt khi hover */
+            }
+
+
         </style>
     </head>
     <body>
-
+        <h1>Cart</h1>
         <header>
             <nav>
                 <div>
@@ -276,7 +312,6 @@
                         </div>
                     </form>
 
-
                     <%
                         Cookie[] cookies = request.getCookies();
                          String role = null;
@@ -287,16 +322,14 @@
                                  }
                               }
                     }
-                    
-                    if(role != null && role.equals("admin")){%>
+                    if(role=="admin"){%>
                     <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                     <%} else {%>
                     <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
-                    </a><%}
-                    %>
+                    </a><%}%>
 
                     <span class="dropdown">
                         <c:choose>
@@ -321,119 +354,39 @@
                 </div>
             </nav>
         </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>InvoiceID</th>
+                    <th>Date</th>
+                    <th>Customer Name</th>
+                    <th>Customer Phone</th>
+                    <th>Customer Address</th>
+                    <th>User</th>
+                    <th>Total</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="iList" items="${requestScope.invoiceList}">
+                    <tr>
+                        <td>${iList.invoiceID}</td>
+                        <td>${iList.date}</td>
+                        <td>${iList.customerName}</td>
+                        <td>${iList.cusPhone}</td>
+                        <td>${iList.cusAddress}</td>
+                        <td>${iList.username}</td>
+                        <td>${iList.total}</td>
+                        <td><a href="showInvoiceDetail?id=${iList.invoiceID}">Detail</a></td>
+                    </tr>
+                </c:forEach>
+                <tr class="total">
+                    <td colspan="8"><h2>Total: ${requestScope.total}$</h2></td>
+                    
+                </tr>
+                
 
-
-        <div class="img_center">
-            <img id="hero" src="img/COMBO IMG/ny24.jpg" alt="Hero Image"/>
-            <img id="price" src="img/COMBO IMG/top10.jpg" alt=""/>
-            <img id="banh" src="img/COMBO IMG/price.jpg" alt=""/>
-        </div>
-
-        <!-- chinh tiep phan ben duoi de chuyen trang sau khi hoan thanh phan tren -->
-
-        <section>
-
-            <h1 style="color: chocolate">Best Sellers</h1>
-
-            <div class="product">
-                <form action="home" method="post">
-                    <input type="hidden" name="name" value="rainbow">
-                    <input type="hidden" name="quantity" value="1">
-                    <h2>Rainbow Cake</h2>
-                    <img src="img/PRODUCT/Special/Rainbow.png" alt="rainbow cake"/>
-                    <p>Delicious rainbow cake for your sweet tooth.</p>
-                    <p>Price: $20</p>
-
-                </form>
-            </div>
-
-
-            <div class="product">
-                <form action="home" method="post">
-                    <input type="hidden" name="name" value="bunny">
-                    <input type="hidden" name="quantity" value="1">
-                    <h2>Bunny cake</h2>
-                    <img src="img/PRODUCT/Cake slice/Bunny.png" alt="bunny cake"/>
-                    <p>Soft and moist muffins bursting with blueberries.</p>
-                    <p>Price: $15</p>
-
-                </form>
-            </div>
-
-
-            <div class="product">
-                <form action="home" method="post">
-                    <input type="hidden" name="name" value="golden lava bun">
-                    <input type="hidden" name="quantity" value="1">
-                    <h2>Golden Lava</h2>
-                    <img src="img/PRODUCT/Bread/Golden Lava Bun.png" alt="golden lava"/>
-                    <p>Soft and moist muffins bursting with blueberries.</p>
-                    <p>Price: $15</p>
-
-                </form>
-            </div>
-
-
-            <!-- Add more products as needed -->
-        </form>
-
-    </section>
-
-
-
-    <section class="categories">
-        <div class="category">
-            <a href="product?type=Bread">
-                <img src="img/PRODUCT/Bread/Gourment Fruit Loaf.png" alt="bread"/>
-                <h3>BREADS</h3>
-            </a>
-        </div>
-
-        <div class="category">
-            <a href="product?type=Cake%20slice">
-                <img src="img/PRODUCT/Cake slice/Chocolate Peanut Mousse.png" alt="cake"/>
-                <h3>CAKE SLICES</h3>
-            </a>
-        </div>
-
-        <div class="category">
-            <a href="product?type=Special">
-                <img src="img/PRODUCT/Special/Snowy Fruity.png" alt="special"/>
-                <h3>SPECIAL ANNIVERSARY</h3>
-            </a>
-        </div>
-
-        <div class="category">
-            <a href="product?type=Sweet">
-                <img src="img/PRODUCT/Sweet/Chocolate Donut.png" alt="sweet"/>
-                <h3>SWEETS</h3>
-            </a>
-        </div>
-
-        <!-- Add more categories as needed -->
-    </section>
-
-
-
-    <footer>
-        <p>&copy; 2024 Bakery Shop. All rights reserved.</p> <br>
-
-    </footer>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let images = document.querySelectorAll('.img_center img');
-            let currentIndex = 0;
-
-            function showNextImage() {
-                images[currentIndex].style.display = 'none';
-                currentIndex = (currentIndex + 1) % images.length;
-                images[currentIndex].style.display = 'block';
-            }
-
-            setInterval(showNextImage, 5000);
-        });
-    </script>
-
-</body>
+            </tbody>
+        </table>
+    </body>
 </html>

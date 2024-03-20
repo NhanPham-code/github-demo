@@ -17,15 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
-import model.invoice;
-import model.productCart;
+import model.invoiceDetail;
 
 /**
  *
- * @author Admin
+ * @author ADMIN
  */
-@WebServlet(name = "cartList", urlPatterns = {"/cartList"})
-public class cartList extends HttpServlet {
+@WebServlet(name = "showInvoiceDetail", urlPatterns = {"/showInvoiceDetail"})
+public class showInvoiceDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +43,10 @@ public class cartList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet cartList</title>");
+            out.println("<title>Servlet showInvoiceDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet cartList at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet showInvoiceDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,7 +64,13 @@ public class cartList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO pDAO = new ProductDAO();
+        String id = request.getParameter("id");
+        invoiceDAO idao = new invoiceDAO();
+        List<invoiceDetail> detailList = new ArrayList<>();
+
+        detailList = idao.getInvoiceDetails(id);
+        
+        request.setAttribute("id", id);
 
         Cookie[] cookies = request.getCookies();
         String user = null;
@@ -78,64 +83,22 @@ public class cartList extends HttpServlet {
         }
         request.setAttribute("user", user);
 
+        ProductDAO pDAO = new ProductDAO();
         List<String> categoryList = pDAO.getAllType();
         request.setAttribute("categoryList", categoryList);
 
-        // set value for cart.jsp
-        List<productCart> cartItems = getCartItemsFromCookies(request);
-
-        request.setAttribute("list", cartItems);
-
-        // cal total
-        float total = 0;
-        for (productCart cartItem : cartItems) {
-            total += cartItem.getProduct().getPrice() * cartItem.getQuantityTB();
-        }
-        request.setAttribute("total", total);
-
-        // get list type
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
-
-    }
-
-    private List<productCart> getCartItemsFromCookies(HttpServletRequest request) {
-        // get username
-        Cookie[] cks = request.getCookies();
-        String username = "";
-        for (Cookie ck : cks) {
-            if (ck.getName().equals("username")) {
-                username = ck.getValue();
-                break;
-            }
+        ProductDAO pdao = new ProductDAO();
+        List<Product> listPro = new ArrayList<>();
+        for (int i = 0; i < detailList.size(); i++) {
+            Product p = pdao.getProductbyID(detailList.get(i).getProductID());
+            p.setQuantity(detailList.get(i).getQuantity());
+            listPro.add(p);
         }
 
-        ProductDAO pDAO = new ProductDAO();
-        Cookie[] cookies = request.getCookies();
-        List<productCart> cartItems = new ArrayList<>();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("cart-" + username)) { // format cart-username
-                    if (cookie.getValue() == null) {
-                        return null;
-                    }
-                    String[] cartItem = cookie.getValue().split("-");
-                    //
-                    for (int i = 0; i < cartItem.length; i++) {
-                        String[] cart = cartItem[i].split("_");
-                        Product product = pDAO.getProductbyID(cart[0]);
-                        productCart pCart = new productCart();
-                        pCart.setProduct(product);
-                        pCart.setQuantityTB(Integer.parseInt(cart[1]));
-                        if (product != null) {
-                            cartItems.add(pCart);
-                        }
-                    }
-                    break; // Assuming there's only one "cart" cookie
-                }
-            }
-        }
-        return cartItems;
+        request.setAttribute("listPro", listPro);
+        
+        
+        request.getRequestDispatcher("detailList.jsp").forward(request, response);
     }
 
     /**

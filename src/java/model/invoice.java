@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author ADMIN
  */
 public class invoice {
+
     private String invoiceID;
     private Date date;
     private String cusAddress;
@@ -18,16 +19,7 @@ public class invoice {
     private String customerName;
     private String cusPhone;
     private String username;
-    private productCart cartTB;
 
-    public productCart getCartTB() {
-        return cartTB;
-    }
-
-    public void setCartTB(productCart cartTB) {
-        this.cartTB = cartTB;
-    }
-    
     public invoice() {
     }
 
@@ -86,4 +78,5 @@ public class invoice {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

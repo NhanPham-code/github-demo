@@ -392,9 +392,26 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="addToCart?id=22&quantity=0" class="badges" data-count="${requestScope.size}">
+                     <%
+                        Cookie[] cookies = request.getCookies();
+                         String role = null;
+                         if (cookies != null) {
+                           for (Cookie cookie : cookies) {
+                              if (cookie.getName().equals("role")) {
+                                 role = cookie.getValue();
+                                 }
+                              }
+                    }
+                    
+                    if(role != null && role.equals("admin")){%>
+                    <a id="cart" name="cart" value="cart" href="invoiceList" class="badges" data-count="${requestScope.size}">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
+                    <%} else {%>
+                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a><%}
+                    %>
 
                     <span class="dropdown">
                         <c:choose>

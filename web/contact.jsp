@@ -5,15 +5,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home</title>
+        <title>Bakery Shop</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <style>
@@ -306,12 +304,12 @@
         <header>
             <nav>
                 <div>
-                    <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo">
+                     <img src="img/LOGO/logo.png" width="150px" height="150px" alt="logo">
                 </div>
                 <div class="menu">
                     <a href="home" name>Home</a>
                     <div class="dropdown">
-                        <span><a href="product?type=all">Products</a></span>
+                        <span>Products</span>
                         <div class="dropdown-content">
                             <c:forEach var="ct" items="${requestScope.categoryList}">
                                 <a href="product?type=${ct}">${ct}</a> <br>
@@ -328,7 +326,7 @@
                         </div>
                     </form>
 
-                    <a id="cart" name="cart" value="cart" href="cartList" class="badges" data-count="${requestScope.size}">
+                    <a id="cart" name="cart" value="cart" href="cart.jsp" class="badges" data-count="0">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
 
@@ -358,7 +356,7 @@
             <!--information airblade 160cc-->
             <div class="row">
                 <div class="col-md-6">
-                    <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> About us </h3>
+                    <h3 class="sub_title"> About us </h3>
                     <div class="about_desc">
                         <p>Experience amazing bread cuisine at Caky Word!</p>
                         <p>
@@ -417,14 +415,15 @@
         <div class="grid-container">
             <div class="row">
                 <div class="col-md-6">
-                    <h3 class="sub_title" data-wow-duration="0.7s" data-wow-delay="0.5s"> Contact </h3>
-                    <form>
+                    <h3 class="sub_title"> Contact </h3>
+                    <form action="contact" method="post">
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Fullname</label>
                             <input
                                 type="text"
                                 class="form-control"
                                 id="exampleFormControlInput1"
+                                name="fullname"
                                 placeholder="Enter Fullname"
                                 />
                         </div>
@@ -435,6 +434,7 @@
                                 type="email"
                                 class="form-control"
                                 id="exampleFormControlInput2"
+                                name="email"
                                 placeholder="name@example.com"
                                 />
                         </div>
@@ -445,6 +445,7 @@
                                 type="text"
                                 class="form-control"
                                 id="exampleFormControlInput3"
+                                name="phone"
                                 placeholder="0xxxxxxxxxx"
                                 />
                         </div>
@@ -454,6 +455,7 @@
                             <textarea
                                 class="form-control"
                                 id="exampleFormControlTextarea1"
+                                name="text"
                                 rows="3"
                                 ></textarea>
                         </div>
@@ -478,7 +480,7 @@
                                     <div class="infomation_text">
                                         600, đường Nguyễn Văn Cừ (nối dài), phường An Bình, quận Ninh Kiều, TP. Cần Thơ                                           </div>
                                 </div>
-                                <a href="mailto:info@breadtalkvietnam.com">
+                                <a href="mailto:cakywordvietnam@gmail.com">
                                     <div class="infomation_inner">
                                         <div class="infomation_svg">
                                             <i class="fa fa-envelope-open"></i>                                            </div>
@@ -487,7 +489,7 @@
                                             cakywordvietnam@gmail.com                                          </div>
                                     </div>
                                 </a>
-                                <a href="tel:02837751727">
+                                <a href="tel:0939740742">
                                     <div class="infomation_inner">
                                         <div class="infomation_svg">
                                             <i class="fa fa-phone"></i>                                            </div>
